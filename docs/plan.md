@@ -9,6 +9,12 @@
 - Python, FastAPI, Jinja2
 - pytest (TDD)
 - 인메모리 데이터 (DB 없음, MVP)
+- 배포: Render (무료 티어)
+
+## 링크
+
+- **배포 URL**: https://moonjung-cafe-recommendation.onrender.com/
+- **GitHub**: https://github.com/jamieqa0/moonjung-cafe-recommendation
 
 ## 실행 명령어
 

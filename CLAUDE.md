@@ -7,6 +7,9 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 문정동 카페 추천 웹 서비스. Python FastAPI 기반, TDD(pytest) 개발 방식.
 리뷰 텍스트에서 키워드를 추출해 카페 특징 태그를 자동 생성하고, 분위기·목적·가격대·조용함·콘센트·거리 조건으로 카페를 추천한다.
 
+- **배포**: https://moonjung-cafe-recommendation.onrender.com/
+- **GitHub**: https://github.com/jamieqa0/moonjung-cafe-recommendation
+
 ## 개발 명령어
 
 ```bash
