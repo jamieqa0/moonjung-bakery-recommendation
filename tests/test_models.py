@@ -1,44 +1,44 @@
 import pytest
 from pydantic import ValidationError
 
-from app.models import Cafe, RecommendRequest
+from app.models import Bakery, RecommendRequest
 
 
-class TestCafe:
-    def test_create_cafe(self):
-        cafe = Cafe(
+class TestBakery:
+    def test_create_bakery(self):
+        bakery = Bakery(
             id=1,
-            name="테스트카페",
+            name="테스트베이커리",
             address="문정동 100",
-            mood=["조용한"],
-            purpose=["작업"],
-            signature_menu="아메리카노",
+            mood=["아늑한"],
+            purpose=["브런치"],
+            signature_menu="소금빵",
             price_range="중가",
             rating=4.0,
-            description="테스트용 카페",
+            description="테스트용 베이커리",
         )
-        assert cafe.name == "테스트카페"
-        assert cafe.reviews == []
-        assert cafe.tags == []
+        assert bakery.name == "테스트베이커리"
+        assert bakery.reviews == []
+        assert bakery.tags == []
 
-    def test_cafe_with_reviews(self):
-        cafe = Cafe(
+    def test_bakery_with_reviews(self):
+        bakery = Bakery(
             id=1,
-            name="테스트카페",
+            name="테스트베이커리",
             address="문정동 100",
-            mood=["조용한"],
-            purpose=["작업"],
-            signature_menu="아메리카노",
+            mood=["아늑한"],
+            purpose=["브런치"],
+            signature_menu="소금빵",
             price_range="중가",
             rating=4.0,
             description="테스트용",
-            reviews=["좋아요", "맛있어요"],
+            reviews=["맛있어요", "또 올게요"],
         )
-        assert len(cafe.reviews) == 2
+        assert len(bakery.reviews) == 2
 
-    def test_cafe_missing_required_field(self):
+    def test_bakery_missing_required_field(self):
         with pytest.raises(ValidationError):
-            Cafe(id=1, name="테스트카페")
+            Bakery(id=1, name="테스트베이커리")
 
 
 class TestRecommendRequest:
@@ -49,6 +49,6 @@ class TestRecommendRequest:
         assert req.price_range is None
 
     def test_partial_request(self):
-        req = RecommendRequest(mood="조용한")
-        assert req.mood == "조용한"
+        req = RecommendRequest(mood="아늑한")
+        assert req.mood == "아늑한"
         assert req.purpose is None

@@ -1,18 +1,18 @@
 from fastapi import APIRouter, HTTPException
 
-from app.data import CAFES
+from app.data import BAKERIES
 
-router = APIRouter(prefix="/api/cafes", tags=["cafes"])
+router = APIRouter(prefix="/api/bakeries", tags=["bakeries"])
 
 
 @router.get("/")
-def get_all_cafes():
-    return CAFES
+def get_all_bakeries():
+    return BAKERIES
 
 
-@router.get("/{cafe_id}")
-def get_cafe(cafe_id: int):
-    for cafe in CAFES:
-        if cafe.id == cafe_id:
-            return cafe
-    raise HTTPException(status_code=404, detail="카페를 찾을 수 없습니다")
+@router.get("/{bakery_id}")
+def get_bakery(bakery_id: int):
+    for bakery in BAKERIES:
+        if bakery.id == bakery_id:
+            return bakery
+    raise HTTPException(status_code=404, detail="베이커리를 찾을 수 없습니다")

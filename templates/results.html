@@ -1,21 +1,21 @@
 {% extends "base.html" %}
 
-{% block title %}추천 결과 - 문정동 카페 추천{% endblock %}
+{% block title %}추천 결과 - 문정동 베이커리 추천{% endblock %}
 
 {% block content %}
 <section class="results">
-    <h2>추천 카페 ({{ cafes|length }}곳)</h2>
-    {% if cafes %}
+    <h2>추천 베이커리 ({{ bakeries|length }}곳)</h2>
+    {% if bakeries %}
     <div class="cafe-list">
-        {% for cafe in cafes %}
+        {% for bakery in bakeries %}
         <article class="cafe-card">
-            <h3>{{ cafe.name }}</h3>
-            <p class="address">{{ cafe.address }}</p>
-            <p class="description">{{ cafe.description }}</p>
-            <p><strong>대표 메뉴:</strong> {{ cafe.signature_menu }}</p>
-            <p><strong>가격대:</strong> {{ cafe.price_range }} · <strong>평점:</strong> {{ cafe.rating }}</p>
+            <h3>{{ bakery.name }}</h3>
+            <p class="address">{{ bakery.address }}</p>
+            <p class="description">{{ bakery.description }}</p>
+            <p><strong>대표 메뉴:</strong> {{ bakery.signature_menu }}</p>
+            <p><strong>가격대:</strong> {{ bakery.price_range }} · <strong>평점:</strong> {{ bakery.rating }}</p>
             <div class="tags">
-                {% for tag in cafe.tags %}
+                {% for tag in bakery.tags %}
                 <span class="tag">{{ tag }}</span>
                 {% endfor %}
             </div>
@@ -23,7 +23,7 @@
         {% endfor %}
     </div>
     {% else %}
-    <p>조건에 맞는 카페가 없습니다.</p>
+    <p>조건에 맞는 베이커리가 없습니다.</p>
     {% endif %}
     <a href="/" class="back-link">다시 추천받기</a>
 </section>

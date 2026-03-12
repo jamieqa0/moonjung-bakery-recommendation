@@ -5,13 +5,13 @@ from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 
-from app.data import CAFES
+from app.data import BAKERIES
 from app.recommender import recommend
 from app.routers import cafes, recommend as recommend_router
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-app = FastAPI(title="문정동 카페 추천")
+app = FastAPI(title="문정동 베이커리 추천")
 app.mount("/static", StaticFiles(directory=BASE_DIR / "static"), name="static")
 templates = Jinja2Templates(directory=BASE_DIR / "templates")
 
@@ -32,11 +32,11 @@ def recommend_page(
     price_range: str = Form(""),
 ):
     results = recommend(
-        CAFES,
+        BAKERIES,
         mood=mood or None,
         purpose=purpose or None,
         price_range=price_range or None,
     )
     return templates.TemplateResponse(
-        "results.html", {"request": request, "cafes": results}
+        "results.html", {"request": request, "bakeries": results}
     )

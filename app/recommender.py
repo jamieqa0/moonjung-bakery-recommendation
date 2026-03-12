@@ -1,42 +1,42 @@
-from app.models import Cafe
+from app.models import Bakery
 
 
 def recommend(
-    cafes: list[Cafe],
+    bakeries: list[Bakery],
     mood: str | None = None,
     purpose: str | None = None,
     price_range: str | None = None,
-    quiet: bool | None = None,
-    power_socket: bool | None = None,
+    parking: bool | None = None,
+    custom_order: bool | None = None,
     max_distance: float | None = None,
     max_results: int = 3,
-) -> list[Cafe]:
+) -> list[Bakery]:
     # 1. 불리언/거리 필터링
-    filtered = cafes
-    if quiet is not None:
-        filtered = [c for c in filtered if c.quiet == quiet]
-    if power_socket is not None:
-        filtered = [c for c in filtered if c.power_socket == power_socket]
+    filtered = bakeries
+    if parking is not None:
+        filtered = [b for b in filtered if b.parking == parking]
+    if custom_order is not None:
+        filtered = [b for b in filtered if b.custom_order == custom_order]
     if max_distance is not None:
-        filtered = [c for c in filtered if c.distance <= max_distance]
+        filtered = [b for b in filtered if b.distance <= max_distance]
 
     # 2. 점수 계산
-    scored: list[tuple[float, Cafe]] = []
-    for cafe in filtered:
-        score = cafe.rating * 0.5
+    scored: list[tuple[float, Bakery]] = []
+    for bakery in filtered:
+        score = bakery.rating * 0.5
 
-        if mood and mood in cafe.mood:
+        if mood and mood in bakery.mood:
             score += 2
-        if purpose and purpose in cafe.purpose:
+        if purpose and purpose in bakery.purpose:
             score += 2
-        if price_range and cafe.price_range == price_range:
+        if price_range and bakery.price_range == price_range:
             score += 1
 
         # 거리 보너스: 가까울수록 높은 점수
         if max_distance and max_distance > 0:
-            score += max(0, (max_distance - cafe.distance) / max_distance)
+            score += max(0, (max_distance - bakery.distance) / max_distance)
 
-        scored.append((score, cafe))
+        scored.append((score, bakery))
 
     scored.sort(key=lambda x: x[0], reverse=True)
-    return [cafe for _, cafe in scored[:max_results]]
+    return [bakery for _, bakery in scored[:max_results]]

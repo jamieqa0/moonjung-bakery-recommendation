@@ -4,11 +4,10 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## 프로젝트 개요
 
-문정동 카페 추천 웹 서비스. Python FastAPI 기반, TDD(pytest) 개발 방식.
-리뷰 텍스트에서 키워드를 추출해 카페 특징 태그를 자동 생성하고, 분위기·목적·가격대·조용함·콘센트·거리 조건으로 카페를 추천한다.
+문정동 베이커리 추천 웹 서비스. Python FastAPI 기반, TDD(pytest) 개발 방식.
+리뷰 텍스트에서 키워드를 추출해 베이커리 특징 태그를 자동 생성하고, 분위기·목적·가격대·주차·주문제작·거리 조건으로 베이커리를 추천한다.
 
-- **배포**: https://moonjung-cafe-recommendation.onrender.com/
-- **GitHub**: https://github.com/jamieqa0/moonjung-cafe-recommendation
+- **GitHub**: https://github.com/jamieqa0/moonjung-bakery-recommendation
 
 ## 개발 명령어
 
@@ -37,11 +36,11 @@ python -m pytest tests/test_recommender.py::TestRecommendBasicFilter::test_filte
 - **app/data.py** — 인메모리 시드 데이터. 앱 시작 시 `review_analyzer`로 태그 자동 생성
 - **app/recommender.py** — 추천 로직. 조건별 가중 점수 계산 후 정렬 반환
 - **app/review_analyzer.py** — 리뷰 키워드 → 태그 매핑 (`KEYWORD_TAG_MAP` 딕셔너리 기반)
-- **app/routers/** — API 엔드포인트 분리 (`cafes.py`, `recommend.py`)
+- **app/routers/** — API 엔드포인트 분리 (`cafes.py`→베이커리 라우터, `recommend.py`)
 
 ### 추천 로직 (`recommender.recommend()`)
 
-1. **필터링 단계**: quiet, power_socket은 정확 일치 필터. max_distance는 `<= max_distance`로 반경 필터.
+1. **필터링 단계**: parking, custom_order는 정확 일치 필터. max_distance는 `<= max_distance`로 반경 필터.
 2. **점수 계산**: `rating × 0.5` + mood 일치 `+2` + purpose 일치 `+2` + price_range 일치 `+1` + 거리 보너스 `(max_distance - distance) / max_distance`
 3. **정렬**: 점수 내림차순, 상위 max_results개 반환 (기본 3)
 
@@ -58,8 +57,8 @@ python -m pytest tests/test_recommender.py::TestRecommendBasicFilter::test_filte
 |--------|------|------|
 | GET | `/` | 메인 페이지 (HTML) |
 | POST | `/recommend` | 폼 제출 → 결과 페이지 (HTML) |
-| GET | `/api/cafes` | 전체 카페 목록 (JSON) |
-| GET | `/api/cafes/{id}` | 단일 카페 조회 (JSON) |
+| GET | `/api/bakeries` | 전체 베이커리 목록 (JSON) |
+| GET | `/api/bakeries/{id}` | 단일 베이커리 조회 (JSON) |
 | POST | `/api/recommend` | 추천 요청 (JSON) |
 
 ## 테스트 구조
