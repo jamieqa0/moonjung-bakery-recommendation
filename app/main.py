@@ -61,13 +61,14 @@ def recommend_page(
         max_distance=float(max_distance) if max_distance else None,
     )
     invitation = random.choice(INVITATION_MESSAGES)
+    kakao_js_key = os.environ.get("KAKAO_JS_KEY", "")
     return templates.TemplateResponse(
         "results.html",
         {
             "request": request,
             "bakeries": results,
             "invitation": invitation,
-            "kakao_js_key": KAKAO_JS_KEY,
+            "kakao_js_key": kakao_js_key,
         },
     )
 
@@ -91,13 +92,14 @@ def sensory_recommend(
         purpose=conditions["purpose"],
     )
     invitation = random.choice(INVITATION_MESSAGES)
+    kakao_js_key = os.environ.get("KAKAO_JS_KEY", "")
     return templates.TemplateResponse(
         "results.html",
         {
             "request": request,
             "bakeries": results,
             "invitation": invitation,
-            "kakao_js_key": KAKAO_JS_KEY,
+            "kakao_js_key": kakao_js_key,
         },
     )
 
