@@ -25,3 +25,19 @@ Render(렌더)에 서비스를 배포할 때, [.env](cci:7://file:///e:/study/mo
 ### ⚠️ 주의사항
 * [.env](cci:7://file:///e:/study/moonjung-bakery-recommendation/.env:0:0-0:0) 파일 자체가 GitHub에 올라가지 않도록, 프로젝트 루트 폴더에 있는 [.gitignore](cci:7://file:///e:/study/moonjung-bakery-recommendation/.gitignore:0:0-0:0) 파일 안에 [.env](cci:7://file:///e:/study/moonjung-bakery-recommendation/.env:0:0-0:0)가 잘 적혀 있는지 꼭 확인하세요! (이미 그렇게 설정되어 있으니 안심하셔도 됩니다.)
 * [render.yaml](cci:7://file:///e:/study/moonjung-bakery-recommendation/render.yaml:0:0-0:0) 파일을 사용해서 인프라스트럭처를 코드로 관리(IaC)하고 계시다면, 해당 파일 안에 `envVars`를 정의하고 `sync: false` 설정을 통해 대시보드에서 안전하게 값을 넣도록 구성할 수도 있습니다. 하지만 지금은 위의 '방법 1'이나 '방법 2'가 가장 직관적이고 표준적인 방법입니다.
+
+<br>
+
+### 🗺️ 카카오 지도 API 사용 시 (401 Unauthorized 에러 해결)
+
+Render에 배포한 후 지도가 나타나지 않는다면 카카오 개발자 센터에서 **허용된 도메인**에 Render 주소를 추가해야 합니다.
+
+1. [카카오 디벨로퍼스(Kakao Developers)](https://developers.kakao.com/)에 접속하여 로그인합니다.
+2. 내 애플리케이션 -> **내 애플리케이션 이름**을 클릭합니다.
+3. 왼쪽 메뉴에서 **'플랫폼'**을 클릭합니다.
+4. **'Web'** 플랫폼 카테고리의 **[수정]** 버튼을 누릅니다.
+5. "사이트 도메인" 입력칸에 **현재 배포된 Render 웹사이트의 전체 주소**를 추가합니다. (줄 바꿈으로 여러 개 등록 가능)
+   * 예: `https://moonjung-bakery-reco.onrender.com` (마지막 끝에 슬래시 `/` 는 빼고 적습니다)
+   * 기존에 작성된 `http://localhost:8000` 등은 로컬 개발을 위해 지우지 말고 그대로 두세요.
+6. **[저장]** 버튼을 누르고, 배포된 사이트에서 약 5분 후 새로고침 해보세요.
+7. JS 도 똑같이 저장해야함
