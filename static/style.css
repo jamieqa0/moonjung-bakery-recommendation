@@ -867,6 +867,23 @@ footer {
     color: var(--amber);
 }
 
+.footer-data-sources {
+    margin-top: 0.5rem;
+    color: var(--ink-muted);
+    font-size: 0.65rem;
+    letter-spacing: 0.02em;
+}
+
+.footer-data-sources a {
+    color: var(--ink-muted);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+}
+
+.footer-data-sources a:hover {
+    color: var(--amber);
+}
+
 /* ===== Animations ===== */
 @keyframes fadeInUp {
     from {
