@@ -17,6 +17,7 @@ class Bakery(BaseModel):
     lat: float = 0.0             # 위도
     lon: float = 0.0             # 경도
     flavor_profile: str = ""       # 대표 메뉴 맛 프로필 (식감, 맛, 향)
+    image_url: str = ""            # 빵집 일러스트 이미지 경로
     reviews: list[str] = []
     tags: list[str] = []          # 리뷰 분석으로 생성된 특징 태그
 

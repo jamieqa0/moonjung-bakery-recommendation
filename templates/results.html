@@ -31,15 +31,20 @@
             <div class="cafe-list">
                 {% for bakery in bakeries %}
                 <article class="cafe-card" data-index="{{ loop.index0 }}">
-                    <h3>{{ bakery.name }}</h3>
-                    <p class="address">{{ bakery.address }}</p>
+                    <div class="card-header">
+                        <img src="{{ bakery.image_url }}" alt="{{ bakery.signature_menu }}" class="card-illust">
+                        <div class="card-header-text">
+                            <h3><a href="https://map.kakao.com/link/search/{{ bakery.name | urlencode }}+문정동" target="_blank" rel="noopener" class="bakery-name-link">{{ bakery.name }}</a></h3>
+                            <p class="address">{{ bakery.address }}</p>
+                        </div>
+                    </div>
                     <p class="description">{{ bakery.description }}</p>
                     <p><strong>대표 메뉴:</strong> {{ bakery.signature_menu }}</p>
                     {% if bakery.flavor_profile %}
                     <p class="flavor-profile">{{ bakery.flavor_profile }}</p>
                     {% endif %}
                     <p><strong>가격대:</strong> {{ bakery.price_range }} · <strong>평점:</strong> {{ bakery.rating }} ·
-                        <strong>문정역에서:</strong> {{ bakery.distance }}km
+                        <strong>문정역에서:</strong> {{ (bakery.distance * 1000) | int }}m
                     </p>
                     <p class="extra-info">
                         {% if bakery.parking %}주차 가능{% else %}주차 불가{% endif %}

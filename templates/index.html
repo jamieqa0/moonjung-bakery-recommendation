@@ -6,19 +6,11 @@
     <div class="intro-left">
         <div class="intro-welcome">
             <img src="/static/hero-alien.svg" alt="빵을 든 우주 여행자" class="intro-welcome-icon">
-            <p class="intro-welcome-title">"어서 와, 우주에서 온 빵친구!"</p>
+            <p class="intro-welcome-title">"어서 와,<br>우주에서 온 빵친구!"</p>
             <div class="intro-welcome-body">
-                <p>
-                    광활한 우주를 떠돌다 보면<br>
-                    수많은 별과 행성을 지나게 됩니다.
-                </p>
-                <p>
-                    그리고 어느 순간,<br>
-                    우리는 문정동(文井洞)에 도착했습니다.<br>
-                    이 작은 동네에는<br>
-                    조용히 빵을 굽는 가게들이 모여 있습니다.
-                </p>
-                <p>이제 당신의 빵 여행 시작-</p>
+                <p>광활한 우주를 떠돌다 보면 수많은 별과 행성을 지나게 됩니다.</p>
+                <p>그리고 어느 순간, 우리는 문정동(文井洞)에 도착했습니다. 이 작은 동네에는 조용히 빵을 굽는 가게들이 모여 있습니다.</p>
+                <p>이제 당신의 빵 여행 시작 —</p>
             </div>
         </div>
     </div>
@@ -27,7 +19,7 @@
     <div class="intro-right">
         <div class="intro-guide">
             <details closed>
-                <summary>지구 빵 튜토리얼 — 고향에도 이런 거 있나요?</summary>
+                <summary>지구 빵 튜토리얼 — 고향 별에도 이런 거 있나요?</summary>
                 <div class="guide-content">
                     <h3>빵(Bread)이 도대체 뭐길래?</h3>
                     <p><strong>발견:</strong> 식물(밀)을 가루 내어 물, 그리고 '효모'라는 지구 미생물과 결합시켜 만든 생화학적 예술품입니다.<br>고온의 오븐에서 팽창을 거치면
@@ -53,9 +45,9 @@
                     <h3>지갑 사정 (가격대)</h3>
                     <p>지구, 문정동은 무상 배급시스템이 아닙니다. 원하는 빵을 얻으려면 지구 화폐를 지불해야 합니다.</p>
                     <ul>
-                        <li><strong>저가</strong> — 지구 체류 예산이 넉넉하지 않은 탐험가도 매일 1일 1빵 할 수 있는 갓성비 구간</li>
-                        <li><strong>중가</strong> — 평범한 지구인들이 일상적으로 에너지와 맞바꾸는 가장 평균적인 예산</li>
-                        <li><strong>고가</strong> — 오늘은 미각에 사치를 부려보겠다 결심한 날, 눈물 머금고 열어야 하는 과감한 선택지</li>
+                        <li><strong>저가 (~1만원)</strong> — 지구 체류 예산이 넉넉하지 않은 탐험가도 매일 1일 1빵 할 수 있는 갓성비 구간</li>
+                        <li><strong>중가 (~2만원)</strong> — 평범한 지구인들이 일상적으로 에너지와 맞바꾸는 가장 평균적인 예산</li>
+                        <li><strong>고가 (3만원~)</strong> — 오늘은 미각에 사치를 부려보겠다 결심한 날, 눈물 머금고 열어야 하는 과감한 선택지</li>
                     </ul>
                 </div>
             </details>
@@ -66,7 +58,8 @@
             <p class="form-hint">선택이 어렵다면 그냥 뛰어넘어도 좋아요. 당신의 텔레파시를 읽고 알아서 추천해드릴 테니까요!</p>
             <form action="/recommend" method="post">
 
-                <span class="chip-group-label"><img src="/static/icons/planet.svg" alt="" class="label-icon">어떤 분위기의 빵집을 원하시나요?</span>
+                <span class="chip-group-label"><img src="/static/icons/planet.svg" alt="" class="label-icon">어떤 분위기의 빵집을
+                    원하시나요?</span>
                 <div class="chip-group">
                     <input type="radio" name="mood" id="mood-none" value="" checked>
                     <label for="mood-none">무엇이든</label>
@@ -75,14 +68,16 @@
                     <input type="radio" name="mood" id="mood-modern" value="모던한">
                     <label for="mood-modern"><img src="/static/icons/rocket.svg" alt="" class="chip-icon"> 모던한</label>
                     <input type="radio" name="mood" id="mood-vintage" value="빈티지한">
-                    <label for="mood-vintage"><img src="/static/icons/telescope.svg" alt="" class="chip-icon"> 빈티지한</label>
+                    <label for="mood-vintage"><img src="/static/icons/telescope.svg" alt="" class="chip-icon">
+                        빈티지한</label>
                     <input type="radio" name="mood" id="mood-emotional" value="감성적인">
                     <label for="mood-emotional"><img src="/static/icons/star.svg" alt="" class="chip-icon"> 감성적인</label>
                     <input type="radio" name="mood" id="mood-comfy" value="편안한">
                     <label for="mood-comfy"><img src="/static/icons/moon.svg" alt="" class="chip-icon"> 편안한</label>
                 </div>
 
-                <span class="chip-group-label"><img src="/static/icons/bread.svg" alt="" class="label-icon">어떤 빵을 원하시나요?</span>
+                <span class="chip-group-label"><img src="/static/icons/bread.svg" alt="" class="label-icon">어떤 빵을
+                    원하시나요?</span>
                 <div class="chip-group">
                     <input type="radio" name="purpose" id="purpose-none" value="" checked>
                     <label for="purpose-none">무엇이든</label>
@@ -91,26 +86,30 @@
                     <input type="radio" name="purpose" id="purpose-gift" value="선물">
                     <label for="purpose-gift"><img src="/static/icons/comet.svg" alt="" class="chip-icon"> 선물</label>
                     <input type="radio" name="purpose" id="purpose-gathering" value="모임">
-                    <label for="purpose-gathering"><img src="/static/icons/planet.svg" alt="" class="chip-icon"> 모임</label>
+                    <label for="purpose-gathering"><img src="/static/icons/planet.svg" alt="" class="chip-icon">
+                        모임</label>
                     <input type="radio" name="purpose" id="purpose-cake" value="케이크">
                     <label for="purpose-cake"><img src="/static/icons/bread.svg" alt="" class="chip-icon"> 케이크</label>
                     <input type="radio" name="purpose" id="purpose-browse" value="빵구경">
-                    <label for="purpose-browse"><img src="/static/icons/telescope.svg" alt="" class="chip-icon"> 빵구경</label>
+                    <label for="purpose-browse"><img src="/static/icons/telescope.svg" alt="" class="chip-icon">
+                        빵구경</label>
                 </div>
 
-                <span class="chip-group-label"><img src="/static/icons/moon.svg" alt="" class="label-icon">지구돈 환전 넉넉히 해왔어요?</span>
+                <span class="chip-group-label"><img src="/static/icons/moon.svg" alt="" class="label-icon">지구돈 환전 넉넉히
+                    해왔어요?</span>
                 <div class="chip-group">
                     <input type="radio" name="price_range" id="price-none" value="" checked>
                     <label for="price-none">무엇이든</label>
                     <input type="radio" name="price_range" id="price-low" value="저가">
-                    <label for="price-low">저가</label>
+                    <label for="price-low">저가 (~1만원)</label>
                     <input type="radio" name="price_range" id="price-mid" value="중가">
-                    <label for="price-mid">중가</label>
+                    <label for="price-mid">중가 (~2만원)</label>
                     <input type="radio" name="price_range" id="price-high" value="고가">
-                    <label for="price-high">고가</label>
+                    <label for="price-high">고가 (3만원~)</label>
                 </div>
 
-                <span class="select-group-label"><img src="/static/icons/ufo.svg" alt="" class="label-icon">문정역에서 얼마나 멀리 갈까요?</span>
+                <span class="select-group-label"><img src="/static/icons/ufo.svg" alt="" class="label-icon">문정역에서 얼마나 멀리
+                    갈까요?</span>
                 <select name="max_distance" id="max_distance">
                     <option value="">맛있다면 어디든 상관없어요</option>
                     <option value="0.3">엎어지면 코 닿을 거리 (300m 이내)</option>
@@ -134,7 +133,8 @@
 
                 <button type="submit"><img src="/static/icons/rocket.svg" alt="" class="btn-icon">내 취향 저격 빵집 찾기</button>
             </form>
-            <a href="/sensory" class="sensory-link"><img src="/static/icons/star.svg" alt="" class="link-icon">고르는 것도 귀찮다면? 감각으로 빵집 찾기!</a>
+            <a href="/sensory" class="sensory-link"><img src="/static/icons/star.svg" alt="" class="link-icon">고르는 것도
+                귀찮다면? 감각으로 빵집 찾기!</a>
         </section>
     </div>
 </div>

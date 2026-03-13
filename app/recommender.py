@@ -1,3 +1,5 @@
+import random
+
 from app.models import Bakery
 
 
@@ -9,7 +11,7 @@ def recommend(
     parking: bool | None = None,
     custom_order: bool | None = None,
     max_distance: float | None = None,
-    max_results: int = 3,
+    max_results: int = 5,
 ) -> list[Bakery]:
     # 1. 불리언/거리 필터링
     filtered = bakeries
@@ -32,9 +34,12 @@ def recommend(
         if price_range and bakery.price_range == price_range:
             score += 1
 
-        # 거리 보너스: 가까울수록 높은 점수
+        # 거리 보너스: 가까울수록 높은 점수 (최대 +3)
         if max_distance and max_distance > 0:
-            score += max(0, (max_distance - bakery.distance) / max_distance)
+            score += max(0, (max_distance - bakery.distance) / max_distance) * 3
+
+        # 랜덤 요소: 결과 다양화 (문정동 빵집들이 밀집해 있어 점수차가 작으므로 폭 넓게)
+        score += random.uniform(0, 1.5)
 
         scored.append((score, bakery))
 

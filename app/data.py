@@ -6,6 +6,20 @@ import pandas as pd
 from app.models import Bakery
 from app.review_analyzer import extract_tags
 
+
+def _get_illust_url(signature_menu: str) -> str:
+    """대표 메뉴 키워드로 일러스트 이미지 경로를 반환한다."""
+    menu = signature_menu.lower()
+    if any(k in menu for k in ["크루아상", "바게트", "캄파뉴"]):
+        return "/static/illust/croissant.svg"
+    if any(k in menu for k in ["케이크", "생크림"]):
+        return "/static/illust/cake.svg"
+    if any(k in menu for k in ["스콘", "앙버터"]):
+        return "/static/illust/scone.svg"
+    if any(k in menu for k in ["마카롱", "타르트"]):
+        return "/static/illust/macaron.svg"
+    return "/static/illust/loaf.svg"
+
 # 문정역 좌표
 MOONJEONG_STATION = (127.1225, 37.4858)  # (lon, lat)
 
@@ -352,19 +366,45 @@ def _load_public_bakeries() -> list[dict]:
             road_addr = str(row.get("도로명전체주소", ""))
             addr = road_addr if road_addr and road_addr != "nan" else str(row["소재지전체주소"])
 
+            # 공공데이터 업태에 따라 purpose/mood 추정
+            biz_name = str(row["사업장명"])
+            biz_type = str(row.get("위생업태명", ""))
+
+            if "케이크" in biz_name:
+                purpose = ["케이크", "선물"]
+                mood = ["감성적인"]
+                sig_menu = "케이크"
+                price = "중가"
+            elif "마카롱" in biz_name or "타르트" in biz_name:
+                purpose = ["선물", "빵구경"]
+                mood = ["감성적인"]
+                sig_menu = "마카롱" if "마카롱" in biz_name else "타르트"
+                price = "중가"
+            elif "크루아상" in biz_name or "베이커리" in biz_name or "빵" in biz_name:
+                purpose = ["빵구경", "브런치"]
+                mood = ["아늑한"]
+                sig_menu = "크루아상" if "크루아상" in biz_name else "대표 빵"
+                price = "중가"
+            else:
+                purpose = ["빵구경"]
+                mood = ["편안한"]
+                sig_menu = "대표 빵"
+                price = "중가"
+
+            # 공공데이터에 평점 없으므로 기본 3.5 부여 (추천 점수에 참여하도록)
             public_bakeries.append({
                 "id": 1000 + i,
-                "name": str(row["사업장명"]),
+                "name": biz_name,
                 "address": addr,
-                "mood": ["편안한"],
-                "purpose": ["빵구경"],
-                "signature_menu": "대표 빵",
+                "mood": mood,
+                "purpose": purpose,
+                "signature_menu": sig_menu,
                 "flavor_profile": "",
-                "price_range": "중가",
-                "rating": 0.0,
+                "price_range": price,
+                "rating": 3.5,
                 "description": f"서울시 공공데이터 등록 제과점",
                 "parking": False,
-                "custom_order": False,
+                "custom_order": "케이크" in biz_name,
                 "distance": dist,
                 "lat": lat,
                 "lon": lon,
@@ -378,19 +418,10 @@ def _load_public_bakeries() -> list[dict]:
 
 def _build_bakeries() -> list[Bakery]:
     bakeries = []
-    # 기존 카카오 데이터 로드
     for raw in _RAW_BAKERIES:
         tags = extract_tags(raw["reviews"])
-        bakeries.append(Bakery(**raw, tags=tags))
-    
-    # 공공데이터 병합
-    public_raw = _load_public_bakeries()
-    for raw in public_raw:
-        # 중복 확인 (이름 기준)
-        if any(b.name == raw["name"] for b in bakeries):
-            continue
-        bakeries.append(Bakery(**raw, tags=[]))
-        
+        image_url = _get_illust_url(raw["signature_menu"])
+        bakeries.append(Bakery(**raw, tags=tags, image_url=image_url))
     return bakeries
 
 

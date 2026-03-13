@@ -59,6 +59,7 @@ def recommend_page(
         parking=True if parking == "on" else None,
         custom_order=True if custom_order == "on" else None,
         max_distance=float(max_distance) if max_distance else None,
+        max_results=3,
     )
     invitation = random.choice(INVITATION_MESSAGES)
     kakao_js_key = os.environ.get("KAKAO_JS_KEY", "")
@@ -90,6 +91,7 @@ def sensory_recommend(
         BAKERIES,
         mood=conditions["mood"],
         purpose=conditions["purpose"],
+        max_results=3,
     )
     invitation = random.choice(INVITATION_MESSAGES)
     kakao_js_key = os.environ.get("KAKAO_JS_KEY", "")

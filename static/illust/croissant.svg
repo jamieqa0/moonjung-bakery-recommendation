@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" fill="none">
+  <!-- croissant body -->
+  <path d="M20 70c5-25 20-40 40-40s35 15 40 40c2 8-2 15-8 15H28c-6 0-10-7-8-15z" fill="#FBBD40" stroke="#3A1F54" stroke-width="3" stroke-linejoin="round"/>
+  <!-- layers -->
+  <path d="M30 55c10-8 22-12 30-10" stroke="#3A1F54" stroke-width="1.8" stroke-linecap="round" fill="none"/>
+  <path d="M28 65c12-6 28-8 40-4" stroke="#3A1F54" stroke-width="1.8" stroke-linecap="round" fill="none"/>
+  <path d="M26 75c14-4 32-4 48 0" stroke="#3A1F54" stroke-width="1.8" stroke-linecap="round" fill="none"/>
+  <!-- face -->
+  <circle cx="48" cy="62" r="2.5" fill="#3A1F54"/>
+  <circle cx="62" cy="62" r="2.5" fill="#3A1F54"/>
+  <circle cx="49.5" cy="60.5" r="1" fill="#FFFDF9"/>
+  <circle cx="63.5" cy="60.5" r="1" fill="#FFFDF9"/>
+  <path d="M50 70q5 4 10 0" stroke="#3A1F54" stroke-width="2" stroke-linecap="round" fill="none"/>
+  <!-- blush -->
+  <ellipse cx="42" cy="68" rx="4" ry="2.5" fill="#F5A623" opacity="0.3"/>
+  <ellipse cx="68" cy="68" rx="4" ry="2.5" fill="#F5A623" opacity="0.3"/>
+  <!-- crumbs -->
+  <circle cx="35" cy="92" r="2" fill="#FBBD40" stroke="#3A1F54" stroke-width="1.2"/>
+  <circle cx="75" cy="94" r="1.5" fill="#FBBD40" stroke="#3A1F54" stroke-width="1"/>
+  <circle cx="55" cy="96" r="1.8" fill="#FBBD40" stroke="#3A1F54" stroke-width="1"/>
+</svg>

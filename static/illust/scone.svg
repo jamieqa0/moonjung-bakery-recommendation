@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" fill="none">
+  <!-- scone body -->
+  <path d="M25 80c-2-15 8-35 35-40s37 22 35 40c-1 5-4 8-8 8H33c-4 0-7-3-8-8z" fill="#FBBD40" stroke="#3A1F54" stroke-width="3" stroke-linejoin="round"/>
+  <!-- texture dots -->
+  <circle cx="42" cy="55" r="2" fill="#E8A84C" stroke="#3A1F54" stroke-width="1"/>
+  <circle cx="65" cy="50" r="2" fill="#E8A84C" stroke="#3A1F54" stroke-width="1"/>
+  <circle cx="50" cy="72" r="2" fill="#E8A84C" stroke="#3A1F54" stroke-width="1"/>
+  <circle cx="72" cy="68" r="1.8" fill="#E8A84C" stroke="#3A1F54" stroke-width="1"/>
+  <circle cx="38" cy="70" r="1.5" fill="#E8A84C" stroke="#3A1F54" stroke-width="1"/>
+  <circle cx="78" cy="58" r="1.8" fill="#E8A84C" stroke="#3A1F54" stroke-width="1"/>
+  <!-- face -->
+  <circle cx="48" cy="62" r="2.5" fill="#3A1F54"/>
+  <circle cx="64" cy="62" r="2.5" fill="#3A1F54"/>
+  <circle cx="49.2" cy="60.8" r="1" fill="#FFFDF9"/>
+  <circle cx="65.2" cy="60.8" r="1" fill="#FFFDF9"/>
+  <path d="M50 70q4 3 8 0" stroke="#3A1F54" stroke-width="2" stroke-linecap="round" fill="none"/>
+  <!-- blush -->
+  <ellipse cx="40" cy="68" rx="4" ry="2.5" fill="#F5A623" opacity="0.3"/>
+  <ellipse cx="72" cy="68" rx="4" ry="2.5" fill="#F5A623" opacity="0.3"/>
+  <!-- cream filling visible from side -->
+  <path d="M35 82c8 2 20 3 30 2s18-2 22-3" stroke="#FFFDF9" stroke-width="3" stroke-linecap="round" fill="none"/>
+  <!-- crumbs -->
+  <circle cx="40" cy="96" r="2" fill="#FBBD40" stroke="#3A1F54" stroke-width="1.2"/>
+  <circle cx="70" cy="98" r="1.5" fill="#FBBD40" stroke="#3A1F54" stroke-width="1"/>
+</svg>
