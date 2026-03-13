@@ -4,7 +4,7 @@
 
 {% block head %}
 {% if kakao_js_key %}
-<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey={{ kakao_js_key }}"></script>
+<script type="text/javascript" src="https://dapi.kakao.com/v2/maps/sdk.js?appkey={{ kakao_js_key }}"></script>
 {% endif %}
 {% endblock %}
 
@@ -13,33 +13,40 @@
     <h2>당신을 위해 고른 문정동의 빵집</h2>
     {% if bakeries %}
 
-    {% if kakao_js_key %}
-    <div id="bakery-map" class="bakery-map"></div>
-    {% endif %}
+    <div class="results-layout">
+        {% if kakao_js_key %}
+        <div class="results-map-col">
+            <div id="bakery-map" class="bakery-map"></div>
+        </div>
+        {% endif %}
 
-    <div class="cafe-list">
-        {% for bakery in bakeries %}
-        <article class="cafe-card">
-            <h3>{{ bakery.name }}</h3>
-            <p class="address">{{ bakery.address }}</p>
-            <p class="description">{{ bakery.description }}</p>
-            <p><strong>대표 메뉴:</strong> {{ bakery.signature_menu }}</p>
-            {% if bakery.flavor_profile %}
-            <p class="flavor-profile">{{ bakery.flavor_profile }}</p>
-            {% endif %}
-            <p><strong>가격대:</strong> {{ bakery.price_range }} · <strong>평점:</strong> {{ bakery.rating }} · <strong>문정역에서:</strong> {{ bakery.distance }}km</p>
-            <p class="extra-info">
-                {% if bakery.parking %}주차 가능{% else %}주차 불가{% endif %}
-                · {% if bakery.custom_order %}주문제작 가능{% else %}주문제작 불가{% endif %}
-            </p>
-            <div class="tags">
-                {% for tag in bakery.tags %}
-                <span class="tag">{{ tag }}</span>
+        <div class="results-cards-col">
+            <div class="cafe-list">
+                {% for bakery in bakeries %}
+                <article class="cafe-card" data-index="{{ loop.index0 }}">
+                    <h3>{{ bakery.name }}</h3>
+                    <p class="address">{{ bakery.address }}</p>
+                    <p class="description">{{ bakery.description }}</p>
+                    <p><strong>대표 메뉴:</strong> {{ bakery.signature_menu }}</p>
+                    {% if bakery.flavor_profile %}
+                    <p class="flavor-profile">{{ bakery.flavor_profile }}</p>
+                    {% endif %}
+                    <p><strong>가격대:</strong> {{ bakery.price_range }} · <strong>평점:</strong> {{ bakery.rating }} · <strong>문정역에서:</strong> {{ bakery.distance }}km</p>
+                    <p class="extra-info">
+                        {% if bakery.parking %}주차 가능{% else %}주차 불가{% endif %}
+                        · {% if bakery.custom_order %}주문제작 가능{% else %}주문제작 불가{% endif %}
+                    </p>
+                    <div class="tags">
+                        {% for tag in bakery.tags %}
+                        <span class="tag">{{ tag }}</span>
+                        {% endfor %}
+                    </div>
+                </article>
                 {% endfor %}
             </div>
-        </article>
-        {% endfor %}
+        </div>
     </div>
+
     {% else %}
     <p class="empty-message">조건에 딱 맞는 곳은 없었지만, 그래도 맛있는 곳을 골라봤어요.</p>
     {% endif %}
@@ -56,11 +63,9 @@
         {% endfor %}
     ];
 
-    // 문정역 좌표
-    var stationLat = 37.4857;
-    var stationLon = 127.1264;
+    var stationLat = 37.4858;
+    var stationLon = 127.1225;
 
-    // 중심 좌표 계산 (추천된 빵집들의 평균)
     var centerLat = bakeries.reduce(function(s, b) { return s + b.lat; }, 0) / bakeries.length;
     var centerLon = bakeries.reduce(function(s, b) { return s + b.lon; }, 0) / bakeries.length;
 
@@ -69,28 +74,44 @@
         level: 4
     });
 
-    // 문정역 마커
     var stationMarker = new kakao.maps.Marker({
         position: new kakao.maps.LatLng(stationLat, stationLon),
         map: map
     });
     var stationInfo = new kakao.maps.InfoWindow({
-        content: '<div style="padding:4px 8px;font-size:12px;white-space:nowrap;">문정역</div>'
+        content: '<div style="padding:5px 10px;font-size:12px;font-weight:600;white-space:nowrap;font-family:sans-serif;">문정역</div>'
     });
     stationInfo.open(map, stationMarker);
 
-    // 빵집 마커
+    var markers = [];
+    var infoWindows = [];
+
     bakeries.forEach(function(b, i) {
         var marker = new kakao.maps.Marker({
             position: new kakao.maps.LatLng(b.lat, b.lon),
             map: map
         });
-        var infoContent = '<div style="padding:4px 8px;font-size:12px;white-space:nowrap;">'
+        var infoContent = '<div style="padding:5px 10px;font-size:12px;white-space:nowrap;font-family:sans-serif;">'
             + '<strong>' + (i + 1) + '. ' + b.name + '</strong><br>'
-            + b.menu + '</div>';
+            + '<span style="color:#7A8A9A;">' + b.menu + '</span></div>';
         var info = new kakao.maps.InfoWindow({ content: infoContent });
+        markers.push(marker);
+        infoWindows.push(info);
+
         kakao.maps.event.addListener(marker, 'click', function() {
+            infoWindows.forEach(function(iw) { iw.close(); });
             info.open(map, marker);
+        });
+    });
+
+    // 카드 호버 시 해당 마커 인포윈도우 표시
+    document.querySelectorAll('.cafe-card').forEach(function(card) {
+        var idx = parseInt(card.getAttribute('data-index'));
+        card.addEventListener('mouseenter', function() {
+            infoWindows.forEach(function(iw) { iw.close(); });
+            if (markers[idx] && infoWindows[idx]) {
+                infoWindows[idx].open(map, markers[idx]);
+            }
         });
     });
 })();

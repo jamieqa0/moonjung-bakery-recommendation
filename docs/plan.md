@@ -278,7 +278,7 @@ score = rating × 0.5
 
 1. [x] https://developers.kakao.com 에서 앱 등록 + **REST API 키** 발급
 2. [x] 카카오 로컬 API로 "문정동 베이커리/빵집" 검색 → 이름/주소/좌표 수집 (`scripts/fetch_bakeries.py`)
-3. [x] 좌표로 문정역(37.4857, 127.1264) 기준 거리(km) 계산 (haversine 공식)
+3. [x] 좌표로 문정역(37.4858, 127.1225) 기준 거리(km) 계산 (haversine 공식)
 4. [x] 수집된 49곳 중 10곳 선정, 리뷰 5개씩 작성 (8개 태그 전부 활성화)
 5. [x] 수집 데이터를 `app/data.py` 형식으로 변환 — 74개 테스트 전부 통과
 
@@ -314,11 +314,60 @@ score = rating × 0.5
 
 ---
 
+### Phase 13. 카카오맵 지도 연동
+
+> 테스트: `tests/test_api.py::TestHTMLPages::test_results_has_map`, `tests/test_data.py`
+
+- [x] `Bakery` 모델에 `lat`, `lon` 좌표 필드 추가
+- [x] 10개 베이커리에 카카오맵 API 좌표 데이터 반영
+- [x] `results.html`에 카카오맵 JS SDK 지도 삽입 (추천 결과 + 문정역 마커)
+- [x] `.env`에 `KAKAO_JS_KEY` 추가, `main.py`에서 `dotenv` 로딩
+- [x] 데이터 무결성 테스트 추가 (`tests/test_data.py` — 좌표, 리뷰, 태그, ID 유일성)
+- [x] 82개 테스트 전부 통과
+
+현재 상태: **완료**
+
+---
+
+### Phase 14. 공공데이터 연동
+
+> 파일: `app/data.py`, `scripts/fetch_public_data.py`, `tests/test_data.py`
+
+- [x] 서울 열린데이터광장 API 수집 스크립트 (`scripts/fetch_public_data.py`)
+- [x] 실제 데이터 수집: 문정동 제과점 413곳 → 빵집 키워드 필터 → 6곳 병합
+- [x] TM 좌표(EPSG:2097) → WGS84 변환 (`_tm_to_wgs84()`)
+- [x] 사업장명 기반 빵집 키워드 필터 (편의점·카페·PC방 등 제외)
+- [x] 도로명 주소 우선 사용 + 문정역 거리 자동 계산
+- [x] 카카오 10곳 + 공공 6곳 = 16곳 통합, 92개 테스트 통과
+
+현재 상태: **완료**
+
+---
+
+### Phase 15. UI 디자인 대폭 개편
+
+> 참고: Mah-Ze-Dahr Bakery (Awwwards) 스타일 지향
+
+- [x] 따뜻한 앰버/크러스트 색상 팔레트로 전환 (`--cream`, `--ink`, `--amber`, `--crust` 등 CSS 변수)
+- [x] 히어로 섹션: 파비콘 이미지 + 라디알 그래디언트 별 배경 + 앰버 디바이더
+- [x] 폼 UI: 분위기/목적/가격대를 `<select>` → 칩(배지) 라디오 그룹으로 변경 (이모지 아이콘 포함)
+- [x] 감각 페이지: 커스텀 라디오 버튼 (앰버 하이라이트, `:has(input:checked)` 활용)
+- [x] 결과 페이지: 2컬럼 그리드 레이아웃 (왼쪽 sticky 지도 + 오른쪽 카드 리스트)
+- [x] 카드 호버 ↔ 지도 마커 인포윈도우 연동
+- [x] 푸터 강화: "We Are The Universe." 인용구 + 정보 라인
+- [x] 파비콘 생성 (32×32 PNG, 빵 이미지)
+- [x] 지구 음식 가이드를 폼 위로 재배치
+- [x] 문정역 좌표 보정: (127.1264, 37.4857) → (127.1225, 37.4858)
+- [x] 카카오맵 SDK URL https 프로토콜 적용
+
+현재 상태: **완료**
+
+---
+
 ### 선택 (향후 확장)
 
 - [ ] SQLite + SQLAlchemy로 데이터 영속화
 - [ ] 베이커리 상세 페이지 (`/bakery/{id}`)
-- [ ] 카카오맵 API 연동 (지도에 베이커리 위치 표시)
 - [ ] 사용자 리뷰 등록 기능 → tags 실시간 재계산
 - [ ] 키워드 가중치 도입 (빈도 기반 태그 신뢰도)
 - [ ] 테스트 커버리지 측정 (`pytest-cov`)

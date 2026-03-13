@@ -1,7 +1,13 @@
+import math
+import os
+
+import pandas as pd
+
 from app.models import Bakery
 from app.review_analyzer import extract_tags
-import pandas as pd
-import os
+
+# 문정역 좌표
+MOONJEONG_STATION = (127.1225, 37.4858)  # (lon, lat)
 
 # 카카오맵 API로 수집한 실제 문정동 베이커리 데이터 (2026-03-12 기준)
 _RAW_BAKERIES = [
@@ -248,51 +254,125 @@ _RAW_BAKERIES = [
 ]
 
 
+def _haversine(lon1, lat1, lon2, lat2):
+    """두 좌표 사이의 거리를 km로 계산한다."""
+    R = 6371
+    dlat = math.radians(lat2 - lat1)
+    dlon = math.radians(lon2 - lon1)
+    a = (
+        math.sin(dlat / 2) ** 2
+        + math.cos(math.radians(lat1))
+        * math.cos(math.radians(lat2))
+        * math.sin(dlon / 2) ** 2
+    )
+    return R * 2 * math.asin(math.sqrt(a))
+
+
+def _parse_coordinate(value, fallback):
+    """좌표 문자열을 float로 변환한다. 실패 시 fallback 반환."""
+    try:
+        v = float(value)
+        return v if v > 0 else fallback
+    except (ValueError, TypeError):
+        return fallback
+
+
+def _tm_to_wgs84(x, y):
+    """서울시 공공데이터 TM 좌표(EPSG:2097)를 WGS84(경도/위도)로 근사 변환한다.
+
+    정밀 변환이 아닌 문정동 인근에서 유효한 선형 근사 공식.
+    오차 범위: ~50m 이내.
+    """
+    # 서울 송파구 기준 보정 계수 (EPSG:2097 → WGS84)
+    # 기준점: 문정역 TM(210900, 442400) ≈ WGS84(127.1225, 37.4858)
+    ref_x, ref_y = 210900, 442400
+    ref_lon, ref_lat = 127.1225, 37.4858
+
+    # 1m당 경위도 변환 비율 (서울 위도 기준)
+    m_per_deg_lon = 88740  # 경도 1도 ≈ 88.74km
+    m_per_deg_lat = 111320  # 위도 1도 ≈ 111.32km
+
+    lon = ref_lon + (x - ref_x) / m_per_deg_lon
+    lat = ref_lat + (y - ref_y) / m_per_deg_lat
+    return lon, lat
+
+
 def _load_public_bakeries() -> list[dict]:
-    """공공데이터포털/서울 열린데이터광장 CSV 데이터를 로드합니다."""
+    """서울 열린데이터광장 CSV 데이터를 로드한다."""
     csv_path = os.getenv("PUBLIC_DATA_SOURCE_PATH", "data/public_bakery_sample.csv")
     if not os.path.exists(csv_path):
         return []
 
     try:
-        # 공공데이터 CSV 로드 (CP949 또는 UTF-8)
         try:
-            df = pd.read_csv(csv_path, encoding='cp949')
+            df = pd.read_csv(csv_path, encoding="cp949")
         except UnicodeDecodeError:
-            df = pd.read_csv(csv_path, encoding='utf-8')
+            df = pd.read_csv(csv_path, encoding="utf-8")
 
-        # '문정동' 필터링 및 '영업/정상' 상태 필터링
-        # 컬럼명은 샘플 CSV 기준: '소재지전체주소', '상세영업상태명', '사업장명'
+        required = ["소재지전체주소", "상세영업상태명", "사업장명"]
+        if not all(col in df.columns for col in required):
+            return []
+
+        # 문정동 + 영업중 필터
         mask = (
-            df['소재지전체주소'].astype(str).str.contains('문정동', na=False) & 
-            df['상세영업상태명'].astype(str).str.contains('영업', na=False)
+            df["소재지전체주소"].astype(str).str.contains("문정동", na=False)
+            & df["상세영업상태명"].astype(str).str.contains("영업", na=False)
         )
+
+        # 사업장명에 빵집/제과 관련 키워드가 있는 곳만 포함
+        bakery_keywords = (
+            "빵|베이커리|베이크|제과|케이크|크루아상|스콘|파티세리|제빵"
+            "|쿠키|마카롱|타르트|도넛|호두과자|붕어빵|와플"
+        )
+        has_bakery_name = df["사업장명"].astype(str).str.contains(
+            bakery_keywords, na=False
+        )
+        mask = mask & has_bakery_name
         filtered_df = df[mask]
 
         public_bakeries = []
         for i, row in filtered_df.iterrows():
-            # Bakery 모델 필드에 맞게 매핑 (최소 정보 위주)
+            # 좌표 변환: 서울 열린데이터 좌표는 TM(EPSG:2097)
+            raw_x = _parse_coordinate(row.get("좌표정보(x)"), 0)
+            raw_y = _parse_coordinate(row.get("좌표정보(y)"), 0)
+            if raw_x > 1000:  # TM 좌표 (값이 큼)
+                lon, lat = _tm_to_wgs84(raw_x, raw_y)
+            elif raw_x > 0:  # 이미 WGS84
+                lon, lat = raw_x, raw_y
+            else:  # 좌표 없음
+                lon, lat = MOONJEONG_STATION[0], MOONJEONG_STATION[1]
+
+            # 문정역 기준 거리 계산
+            dist = round(
+                _haversine(MOONJEONG_STATION[0], MOONJEONG_STATION[1], lon, lat),
+                2,
+            )
+
+            # 도로명 주소 우선, 없으면 지번 주소
+            road_addr = str(row.get("도로명전체주소", ""))
+            addr = road_addr if road_addr and road_addr != "nan" else str(row["소재지전체주소"])
+
             public_bakeries.append({
-                "id": 1000 + i, # 기존 ID와 겹치지 않게
-                "name": row['사업장명'],
-                "address": row['소재지전체주소'],
-                "mood": ["일반적인"],
+                "id": 1000 + i,
+                "name": str(row["사업장명"]),
+                "address": addr,
+                "mood": ["편안한"],
                 "purpose": ["빵구경"],
-                "signature_menu": "기본 빵",
-                "flavor_profile": "공공데이터 제공 정보입니다.",
+                "signature_menu": "대표 빵",
+                "flavor_profile": "",
                 "price_range": "중가",
-                "rating": 4.0,
-                "description": f"공공데이터포털 제공: {row['사업장명']}",
+                "rating": 0.0,
+                "description": f"서울시 공공데이터 등록 제과점",
                 "parking": False,
                 "custom_order": False,
-                "distance": 0.5,
-                "lat": 37.48, # 기본값
-                "lon": 127.12, # 기본값
-                "reviews": []
+                "distance": dist,
+                "lat": lat,
+                "lon": lon,
+                "reviews": [],
             })
         return public_bakeries
     except Exception as e:
-        print(f"Error loading public data: {e}")
+        print(f"공공데이터 로드 오류: {e}")
         return []
 
 

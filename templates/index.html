@@ -1,68 +1,11 @@
 {% extends "base.html" %}
 
 {% block content %}
-<section class="welcome">
-    <p class="welcome-message">어서 와, 우주에서 온 친구.</p>
-    <p class="welcome-sub">아직 만난 적 없는 친구에게 보내는 빵집 가이드</p>
-</section>
-
-<section class="recommend-form">
-    <h2>어떤 빵집을 찾고 있나요?</h2>
-    <p class="form-hint">잘 모르겠으면 안 골라도 괜찮아요. 우리가 맛있는 곳을 찾아줄게요.</p>
-    <form action="/recommend" method="post">
-        <label for="mood">분위기</label>
-        <select name="mood" id="mood">
-            <option value="">잘 모르겠어요</option>
-            <option value="아늑한">아늑한</option>
-            <option value="모던한">모던한</option>
-            <option value="빈티지한">빈티지한</option>
-            <option value="감성적인">감성적인</option>
-            <option value="편안한">편안한</option>
-        </select>
-
-        <label for="purpose">목적</label>
-        <select name="purpose" id="purpose">
-            <option value="">잘 모르겠어요</option>
-            <option value="브런치">브런치</option>
-            <option value="선물">선물</option>
-            <option value="모임">모임</option>
-            <option value="케이크">케이크</option>
-            <option value="빵구경">빵구경</option>
-        </select>
-
-        <label for="price_range">가격대</label>
-        <select name="price_range" id="price_range">
-            <option value="">잘 모르겠어요</option>
-            <option value="저가">저가</option>
-            <option value="중가">중가</option>
-            <option value="고가">고가</option>
-        </select>
-
-        <label for="max_distance">문정역에서 거리</label>
-        <select name="max_distance" id="max_distance">
-            <option value="">상관없어요</option>
-            <option value="0.3">가까운 곳만 (300m 이내)</option>
-            <option value="0.5">걸어갈 수 있는 곳 (500m 이내)</option>
-            <option value="1.0">조금 걸어도 괜찮아요 (1km 이내)</option>
-            <option value="2.0">멀어도 괜찮아요 (2km 이내)</option>
-        </select>
-
-        <div class="checkbox-group">
-            <label class="checkbox-label">
-                <input type="checkbox" name="parking" id="parking">
-                <span>주차 가능한 곳</span>
-                <span class="checkbox-hint">이동 기계(자동차)를 세울 공간이 필요해요</span>
-            </label>
-            <label class="checkbox-label">
-                <input type="checkbox" name="custom_order" id="custom_order">
-                <span>주문 제작 가능한 곳</span>
-                <span class="checkbox-hint">원하는 모양과 맛으로 빵을 맞춤 생산해줘요</span>
-            </label>
-        </div>
-
-        <button type="submit">내 빵집 찾기</button>
-    </form>
-    <a href="/sensory" class="sensory-link">말로 설명하기 어렵다면? 감각으로 찾기</a>
+<section class="hero">
+    <img src="/static/favicon.png" alt="" class="hero-icon">
+    <p class="hero-title">어서 와, 우주에서 온 친구.</p>
+    <p class="hero-sub">아직 만난 적 없는 친구에게 보내는 빵집 가이드</p>
+    <hr class="hero-divider">
 </section>
 
 <section class="earth-guide">
@@ -93,5 +36,81 @@
             </ul>
         </div>
     </details>
+</section>
+
+<section class="recommend-form">
+    <h2>어떤 빵집을 찾고 있나요?</h2>
+    <p class="form-hint">잘 모르겠으면 안 골라도 괜찮아요. 우리가 맛있는 곳을 찾아줄게요.</p>
+    <form action="/recommend" method="post">
+
+        <span class="chip-group-label">분위기</span>
+        <div class="chip-group">
+            <input type="radio" name="mood" id="mood-none" value="" checked>
+            <label for="mood-none">상관없어요</label>
+            <input type="radio" name="mood" id="mood-cozy" value="아늑한">
+            <label for="mood-cozy"><span class="chip-icon">&#127774;</span> 아늑한</label>
+            <input type="radio" name="mood" id="mood-modern" value="모던한">
+            <label for="mood-modern"><span class="chip-icon">&#9632;</span> 모던한</label>
+            <input type="radio" name="mood" id="mood-vintage" value="빈티지한">
+            <label for="mood-vintage"><span class="chip-icon">&#128247;</span> 빈티지한</label>
+            <input type="radio" name="mood" id="mood-emotional" value="감성적인">
+            <label for="mood-emotional"><span class="chip-icon">&#127800;</span> 감성적인</label>
+            <input type="radio" name="mood" id="mood-comfy" value="편안한">
+            <label for="mood-comfy"><span class="chip-icon">&#9749;</span> 편안한</label>
+        </div>
+
+        <span class="chip-group-label">목적</span>
+        <div class="chip-group">
+            <input type="radio" name="purpose" id="purpose-none" value="" checked>
+            <label for="purpose-none">상관없어요</label>
+            <input type="radio" name="purpose" id="purpose-brunch" value="브런치">
+            <label for="purpose-brunch"><span class="chip-icon">&#127860;</span> 브런치</label>
+            <input type="radio" name="purpose" id="purpose-gift" value="선물">
+            <label for="purpose-gift"><span class="chip-icon">&#127873;</span> 선물</label>
+            <input type="radio" name="purpose" id="purpose-gathering" value="모임">
+            <label for="purpose-gathering"><span class="chip-icon">&#128101;</span> 모임</label>
+            <input type="radio" name="purpose" id="purpose-cake" value="케이크">
+            <label for="purpose-cake"><span class="chip-icon">&#127856;</span> 케이크</label>
+            <input type="radio" name="purpose" id="purpose-browse" value="빵구경">
+            <label for="purpose-browse"><span class="chip-icon">&#128064;</span> 빵구경</label>
+        </div>
+
+        <span class="chip-group-label">가격대</span>
+        <div class="chip-group">
+            <input type="radio" name="price_range" id="price-none" value="" checked>
+            <label for="price-none">상관없어요</label>
+            <input type="radio" name="price_range" id="price-low" value="저가">
+            <label for="price-low">저가</label>
+            <input type="radio" name="price_range" id="price-mid" value="중가">
+            <label for="price-mid">중가</label>
+            <input type="radio" name="price_range" id="price-high" value="고가">
+            <label for="price-high">고가</label>
+        </div>
+
+        <span class="select-group-label">문정역에서 거리</span>
+        <select name="max_distance" id="max_distance">
+            <option value="">상관없어요</option>
+            <option value="0.3">가까운 곳만 (300m 이내)</option>
+            <option value="0.5">걸어갈 수 있는 곳 (500m 이내)</option>
+            <option value="1.0">조금 걸어도 괜찮아요 (1km 이내)</option>
+            <option value="2.0">멀어도 괜찮아요 (2km 이내)</option>
+        </select>
+
+        <div class="checkbox-group">
+            <label class="checkbox-label">
+                <input type="checkbox" name="parking" id="parking">
+                <span>주차 가능한 곳</span>
+                <span class="checkbox-hint">이동 기계(자동차)를 세울 공간이 필요해요</span>
+            </label>
+            <label class="checkbox-label">
+                <input type="checkbox" name="custom_order" id="custom_order">
+                <span>주문 제작 가능한 곳</span>
+                <span class="checkbox-hint">원하는 모양과 맛으로 빵을 맞춤 생산해줘요</span>
+            </label>
+        </div>
+
+        <button type="submit">내 빵집 찾기</button>
+    </form>
+    <a href="/sensory" class="sensory-link">말로 설명하기 어렵다면? 감각으로 찾기</a>
 </section>
 {% endblock %}

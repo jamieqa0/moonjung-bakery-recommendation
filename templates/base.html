@@ -4,19 +4,27 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}문정동 빵 안내소{% endblock %}</title>
+    <link rel="icon" type="image/png" href="/static/favicon.png">
     <link rel="stylesheet" href="/static/style.css">
     {% block head %}{% endblock %}
 </head>
 <body>
-    <header>
-        <h1><a href="/">문정동 빵 안내소</a></h1>
-        <p class="subtitle">우주 어디서든 환영합니다</p>
-    </header>
-    <main>
-        {% block content %}{% endblock %}
-    </main>
-    <footer>
-        <p>We Are The Universe.</p>
-    </footer>
+    <div class="container">
+        <header>
+            <h1><a href="/">문정동 빵 안내소</a></h1>
+            <p class="subtitle">우주 어디서든 환영합니다</p>
+            <nav>
+                <a href="/">추천받기</a>
+                <a href="/sensory">감각으로 찾기</a>
+            </nav>
+        </header>
+        <main>
+            {% block content %}{% endblock %}
+        </main>
+        <footer>
+            <p class="footer-quote">We Are The Universe.</p>
+            <p class="footer-info">문정동 빵 안내소 &middot; 2026 &middot; <a href="https://github.com/jamieqa0/moonjung-bakery-recommendation">GitHub</a></p>
+        </footer>
+    </div>
 </body>
 </html>

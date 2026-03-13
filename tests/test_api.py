@@ -191,6 +191,21 @@ class TestHTMLPages:
         assert response.status_code == 200
         assert "당신을 위해 고른" in response.text
 
+    def test_results_has_map(self, client):
+        response = client.post(
+            "/recommend", data={"mood": "", "purpose": "", "price_range": ""}
+        )
+        assert response.status_code == 200
+        assert "bakery-map" in response.text
+
+    def test_bakery_api_has_coordinates(self, client):
+        response = client.get("/api/bakeries/1")
+        data = response.json()
+        assert "lat" in data
+        assert "lon" in data
+        assert data["lat"] != 0.0
+        assert data["lon"] != 0.0
+
     def test_404_page(self, client):
         response = client.get("/nonexistent-page")
         assert response.status_code == 404
