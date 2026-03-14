@@ -5,7 +5,7 @@ import os
 import pandas as pd
 
 from app.models import Bakery
-from app.review_analyzer import extract_tags
+from app.review_analyzer import extract_tags, generate_fallback_tags
 
 
 def _get_illust_url(signature_menu: str) -> str:
@@ -463,6 +463,22 @@ def _infer_attributes(name: str, category: str) -> dict:
             "price_range": "일반",
             "custom_order": False,
         }
+    if "베이글" in name_lower:
+        return {
+            "mood": ["모던한"],
+            "purpose": ["빵구경", "브런치"],
+            "signature_menu": "베이글",
+            "price_range": "일반",
+            "custom_order": False,
+        }
+    if "포카치아" in name_lower:
+        return {
+            "mood": ["아늑한"],
+            "purpose": ["빵구경", "브런치"],
+            "signature_menu": "포카치아",
+            "price_range": "일반",
+            "custom_order": False,
+        }
     if any(k in name_lower for k in ["호두", "붕어빵", "꽈배기"]):
         return {
             "mood": ["편안한"],
@@ -584,6 +600,8 @@ def _build_bakeries() -> list[Bakery]:
     # 1. 시드 데이터 (리치 데이터: 리뷰, 맛 프로필 등 보유)
     for raw in _RAW_BAKERIES:
         tags = extract_tags(raw["reviews"])
+        if not tags:
+            tags = generate_fallback_tags(raw["mood"], raw["purpose"])
         image_url = _get_illust_url(raw["signature_menu"])
         photo_url = photos.get(str(raw["id"]), "")
         bakeries.append(Bakery(**raw, tags=tags, image_url=image_url, photo_url=photo_url))
@@ -595,6 +613,8 @@ def _build_bakeries() -> list[Bakery]:
         if raw["name"] in seen_names:
             continue
         tags = extract_tags(raw["reviews"])
+        if not tags:
+            tags = generate_fallback_tags(raw["mood"], raw["purpose"])
         image_url = _get_illust_url(raw["signature_menu"])
         photo_url = photos.get(str(raw["id"]), "")
         bakeries.append(Bakery(**raw, tags=tags, image_url=image_url, photo_url=photo_url))
@@ -605,6 +625,8 @@ def _build_bakeries() -> list[Bakery]:
         if raw["name"] in seen_names:
             continue
         tags = extract_tags(raw["reviews"])
+        if not tags:
+            tags = generate_fallback_tags(raw["mood"], raw["purpose"])
         image_url = _get_illust_url(raw["signature_menu"])
         photo_url = photos.get(str(raw["id"]), "")
         bakeries.append(Bakery(**raw, tags=tags, image_url=image_url, photo_url=photo_url))

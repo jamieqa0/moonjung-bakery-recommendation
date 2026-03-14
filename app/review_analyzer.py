@@ -25,3 +25,32 @@ def extract_tags(reviews: list[str]) -> list[str]:
             tags.append(tag)
 
     return tags
+
+
+# mood/purpose → 태그 매핑 (리뷰 없는 빵집용 폴백)
+_MOOD_TAG_MAP: dict[str, str] = {
+    "아늑한": "아늑한",
+    "편안한": "동네 단골",
+}
+
+_PURPOSE_TAG_MAP: dict[str, str] = {
+    "빵구경": "빵맛집",
+    "브런치": "브런치맛집",
+    "선물": "선물하기좋은",
+    "케이크": "케이크맛집",
+    "동네 단골": "동네 단골",
+    "대형빵집": "대형빵집",
+    "식사빵": "식사빵",
+}
+
+
+def generate_fallback_tags(mood: list[str], purpose: list[str]) -> list[str]:
+    """리뷰가 없을 때 mood/purpose에서 태그를 생성한다."""
+    tags: list[str] = []
+    for m in mood:
+        if m in _MOOD_TAG_MAP and _MOOD_TAG_MAP[m] not in tags:
+            tags.append(_MOOD_TAG_MAP[m])
+    for p in purpose:
+        if p in _PURPOSE_TAG_MAP and _PURPOSE_TAG_MAP[p] not in tags:
+            tags.append(_PURPOSE_TAG_MAP[p])
+    return tags

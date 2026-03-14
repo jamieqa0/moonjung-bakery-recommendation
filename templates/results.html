@@ -23,7 +23,11 @@
         <!-- 좌측 프레임: 지도 -->
         {% if kakao_js_key %}
         <div class="results-left">
-            <div id="bakery-map" class="bakery-map"></div>
+            <div class="map-container">
+                <div id="bakery-map" class="bakery-map"></div>
+                <div class="map-tint"></div>
+                <div class="map-vignette"></div>
+            </div>
         </div>
         {% endif %}
 
@@ -41,14 +45,16 @@
                         <img src="{{ bakery.image_url }}" alt="{{ bakery.signature_menu }}" class="card-illust">
                         {% endif %}
                         <div class="card-header-text">
-                            <h3><a href="/bakery/{{ bakery.id }}" class="bakery-name-link">{{ bakery.name }}</a></h3>
+                            <h3>{{ bakery.name }}</h3>
                             <div class="address-row">
+                                <a href="https://search.naver.com/search.naver?query={{ bakery.name | urlencode }}" target="_blank"
+                                    rel="noopener" class="naver-link" title="네이버에서 검색">N</a>
                                 {% if bakery.kakao_id %}
                                 <a href="https://place.map.kakao.com/{{ bakery.kakao_id }}" target="_blank"
-                                    rel="noopener" class="map-link">[·]</a>
+                                    rel="noopener" class="kakao-link" title="카카오맵에서 보기">K</a>
                                 {% else %}
                                 <a href="https://map.kakao.com/link/search/{{ bakery.address | urlencode }}" target="_blank"
-                                    rel="noopener" class="map-link">[·]</a>
+                                    rel="noopener" class="kakao-link" title="카카오맵에서 보기">K</a>
                                 {% endif %}
                                 <span class="address">{{ bakery.address }}</span>
                             </div>
@@ -71,6 +77,19 @@
                         <span class="tag">{{ tag }}</span>
                         {% endfor %}
                     </div>
+
+                    {% if bakery.reviews %}
+                    <details class="card-accordion">
+                        <summary><img src="/static/icons/telescope.svg" alt="" class="label-icon">방문자 리뷰 ({{ bakery.reviews|length }})</summary>
+                        <div class="accordion-body">
+                            <ul class="card-review-list">
+                                {% for review in bakery.reviews %}
+                                <li>{{ review }}</li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </details>
+                    {% endif %}
                 </article>
                 {% endfor %}
             </div>
@@ -98,11 +117,34 @@
     {% endfor %}
     ];
 
+    /* Custom marker SVG — amber pin with bread icon */
+    function markerSvg(num) {
+        return 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(
+            '<svg xmlns="http://www.w3.org/2000/svg" width="36" height="46" viewBox="0 0 36 46">' +
+            '<defs><filter id="ds" x="-20%" y="-10%" width="140%" height="130%"><feDropShadow dx="0" dy="2" stdDeviation="2" flood-color="#2C1810" flood-opacity="0.2"/></filter></defs>' +
+            '<path d="M18 44C18 44 33 28 33 17A15 15 0 0 0 3 17C3 28 18 44 18 44Z" fill="#C8842A" filter="url(#ds)"/>' +
+            '<path d="M18 42C18 42 31 27 31 17A13 13 0 0 0 5 17C5 27 18 42 18 42Z" fill="#E8A84C"/>' +
+            '<circle cx="18" cy="17" r="10" fill="#FFF8EE"/>' +
+            '<text x="18" y="21" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="700" fill="#8B5E3C">' + num + '</text>' +
+            '</svg>'
+        );
+    }
+
+    /* Station marker SVG — dark purple/ink pin */
+    var stationMarkerSvg = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(
+        '<svg xmlns="http://www.w3.org/2000/svg" width="28" height="38" viewBox="0 0 28 38">' +
+        '<path d="M14 36C14 36 26 23 26 14A12 12 0 0 0 2 14C2 23 14 36 14 36Z" fill="#2C1810"/>' +
+        '<path d="M14 34C14 34 24 22 24 14A10 10 0 0 0 4 14C4 22 14 34 14 34Z" fill="#5A4032"/>' +
+        '<circle cx="14" cy="14" r="5" fill="#FFF8EE"/>' +
+        '<circle cx="14" cy="14" r="2.5" fill="#C8842A"/>' +
+        '</svg>'
+    );
+
     function initMap() {
         try {
             if (typeof kakao === 'undefined' || typeof kakao.maps === 'undefined') {
                 document.getElementById('bakery-map').innerHTML =
-                    '<p style="padding:2rem;text-align:center;color:#8A7668;">지도를 불러올 수 없습니다. (SDK 로드 실패)</p>';
+                    '<p class="map-fallback">지도를 불러올 수 없습니다. (SDK 로드 실패)</p>';
                 return;
             }
 
@@ -122,57 +164,107 @@
                 level: 4
             });
 
+            /* Station custom marker */
+            var stationImgSize = new kakao.maps.Size(28, 38);
+            var stationImgOpt = { offset: new kakao.maps.Point(14, 38) };
+            var stationImage = new kakao.maps.MarkerImage(stationMarkerSvg, stationImgSize, stationImgOpt);
+
             var stationMarker = new kakao.maps.Marker({
                 position: new kakao.maps.LatLng(stationLat, stationLon),
-                map: map
+                map: map,
+                image: stationImage,
+                zIndex: 1
             });
 
-            var stationInfo = new kakao.maps.InfoWindow({
-                content: '<div style="padding:5px 10px;font-size:12px;font-weight:600;">문정역</div>'
+            /* Station overlay label */
+            var stationOverlay = new kakao.maps.CustomOverlay({
+                position: new kakao.maps.LatLng(stationLat, stationLon),
+                content: '<div class="map-overlay-wrap map-overlay-wrap--station"><div class="map-overlay-station">문정역</div></div>',
+                yAnchor: 1,
+                zIndex: 2
             });
-            stationInfo.open(map, stationMarker);
+            stationOverlay.setMap(map);
 
             var markers = [];
-            var infoWindows = [];
+            var overlays = [];
+            var activeOverlay = null;
+
+            function closeActiveOverlay() {
+                if (activeOverlay) {
+                    activeOverlay.setMap(null);
+                    activeOverlay = null;
+                }
+            }
+
+            function showOverlay(idx) {
+                closeActiveOverlay();
+                if (overlays[idx]) {
+                    overlays[idx].setMap(map);
+                    activeOverlay = overlays[idx];
+                }
+            }
 
             bakeryData.forEach(function (b, i) {
+                /* Custom marker image */
+                var imgSize = new kakao.maps.Size(36, 46);
+                var imgOpt = { offset: new kakao.maps.Point(18, 46) };
+                var markerImage = new kakao.maps.MarkerImage(markerSvg(i + 1), imgSize, imgOpt);
+
                 var marker = new kakao.maps.Marker({
                     position: new kakao.maps.LatLng(b.lat, b.lon),
-                    map: map
+                    map: map,
+                    image: markerImage,
+                    zIndex: 3
                 });
 
-                var infoContent =
-                    '<div style="padding:5px 10px;font-size:12px;">' +
-                    '<strong>' + (i + 1) + '. ' + b.name + '</strong><br>' +
-                    '<span style="color:#7A8A9A;">' + b.menu + '</span>' +
+                /* Custom overlay card — wrapped for vertical offset above marker */
+                var overlayContent =
+                    '<div class="map-overlay-wrap">' +
+                    '<div class="map-overlay-card">' +
+                    '<button class="overlay-close" data-overlay-close aria-label="닫기">&times;</button>' +
+                    '<div class="overlay-name"><span class="overlay-num">' + (i + 1) + '</span>' + b.name + '</div>' +
+                    '<div class="overlay-menu">' + b.menu + '</div>' +
+                    '</div>' +
                     '</div>';
 
-                var info = new kakao.maps.InfoWindow({
-                    content: infoContent
+                var overlay = new kakao.maps.CustomOverlay({
+                    position: new kakao.maps.LatLng(b.lat, b.lon),
+                    content: overlayContent,
+                    yAnchor: 1,
+                    zIndex: 10
                 });
 
                 markers.push(marker);
-                infoWindows.push(info);
+                overlays.push(overlay);
 
                 kakao.maps.event.addListener(marker, 'click', function () {
-                    infoWindows.forEach(function (iw) { iw.close(); });
-                    info.open(map, marker);
+                    showOverlay(i);
                 });
             });
 
+            /* Close overlay on map click or close button */
+            kakao.maps.event.addListener(map, 'click', function () {
+                closeActiveOverlay();
+            });
+
+            document.addEventListener('click', function (e) {
+                if (e.target.closest('[data-overlay-close]')) {
+                    closeActiveOverlay();
+                }
+            });
+
+            /* Card hover → show overlay */
             document.querySelectorAll('.cafe-card').forEach(function (card) {
                 var idx = parseInt(card.getAttribute('data-index'));
                 card.addEventListener('mouseenter', function () {
-                    infoWindows.forEach(function (iw) { iw.close(); });
-                    if (markers[idx] && infoWindows[idx]) {
-                        infoWindows[idx].open(map, markers[idx]);
-                    }
+                    showOverlay(idx);
                 });
             });
+
         } catch (e) {
             console.error('지도 초기화 실패:', e);
             document.getElementById('bakery-map').innerHTML =
-                '<p style="padding:2rem;text-align:center;color:#8A7668;">지도 로드 중 오류: ' + e.message + '</p>';
+                '<p class="map-fallback">지도 로드 중 오류: ' + e.message + '</p>';
         }
     }
 
@@ -183,4 +275,23 @@
     }
 </script>
 {% endif %}
+
+<script type="module">
+    import { animate, hover, press } from "https://cdn.jsdelivr.net/npm/motion@12.34.0/+esm"
+
+    document.querySelectorAll('.card-photo, .card-illust').forEach(el => {
+        hover(el, (element) => {
+            animate(element, { scale: 1.2, rotate: 3 }, { type: "spring", stiffness: 300, damping: 15 })
+            return () => animate(element, { scale: 1, rotate: 0 }, { type: "spring", stiffness: 300, damping: 20 })
+        })
+    })
+
+    document.querySelectorAll('.card-accordion summary').forEach(el => {
+        press(el, (element) => {
+            animate(element, { scale: 0.97 }, { type: "spring", stiffness: 800 })
+            return () =>
+                animate(element, { scale: 1 }, { type: "spring", stiffness: 400 })
+        })
+    })
+</script>
 {% endblock %}

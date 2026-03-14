@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}문빵 스테이션{% endblock %}</title>
+    <title>{% block title %}MoonBBang{% endblock %}</title>
     <link rel="icon" type="image/svg+xml" href="/static/favicon.svg">
     <link rel="icon" type="image/png" href="/static/favicon.svg">
     <link rel="stylesheet" href="/static/style.css">
@@ -15,7 +15,7 @@
     <div id="tsparticles"></div>
     <div class="container">
         <header>
-            <h1><a href="/"><img src="/static/icons/bread.svg" alt="" class="header-icon">문빵 스테이션</a></h1>
+            <h1><a href="/"><img src="/static/icons/bread.svg" alt="" class="header-icon">문정빵 스테이션</a></h1>
             <p class="subtitle">문정동에서 맛빵을 찾는 외계 여행자들을 위해</p>
             <nav>
                 <a href="/"><img src="/static/icons/rocket.svg" alt="" class="nav-icon">추천받기</a>
@@ -100,6 +100,18 @@
             },
             detectRetina: true
         });
+    </script>
+
+    <script type="module">
+        import { animate, press } from "https://cdn.jsdelivr.net/npm/motion@12.34.0/+esm"
+
+        document.querySelectorAll('.chip-group label, .sensory-option, .checkbox-label').forEach(el => {
+            press(el, (element) => {
+                animate(element, { scale: 0.9 }, { type: "spring", stiffness: 800 })
+                return () =>
+                    animate(element, { scale: 1 }, { type: "spring", stiffness: 400 })
+            })
+        })
     </script>
 </body>
 

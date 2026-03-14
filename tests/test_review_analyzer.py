@@ -1,4 +1,4 @@
-from app.review_analyzer import extract_tags
+from app.review_analyzer import extract_tags, generate_fallback_tags
 
 
 class TestExtractTags:
@@ -40,3 +40,32 @@ class TestExtractTags:
         reviews = ["선물용으로 포장해줘요", "예쁜 박스에 담아줘요"]
         tags = extract_tags(reviews)
         assert "선물하기좋은" in tags
+
+
+class TestGenerateFallbackTags:
+    def test_mood_mapping(self):
+        tags = generate_fallback_tags(["아늑한"], [])
+        assert "아늑한" in tags
+
+    def test_purpose_mapping(self):
+        tags = generate_fallback_tags([], ["브런치", "선물"])
+        assert "브런치맛집" in tags
+        assert "선물하기좋은" in tags
+
+    def test_combined_mood_purpose(self):
+        tags = generate_fallback_tags(["편안한"], ["빵구경", "대형빵집"])
+        assert "동네 단골" in tags
+        assert "빵맛집" in tags
+        assert "대형빵집" in tags
+
+    def test_no_duplicates(self):
+        tags = generate_fallback_tags(["편안한"], ["동네 단골"])
+        assert tags.count("동네 단골") == 1
+
+    def test_empty_inputs(self):
+        tags = generate_fallback_tags([], [])
+        assert tags == []
+
+    def test_unmapped_values_ignored(self):
+        tags = generate_fallback_tags(["모던한"], ["모임"])
+        assert tags == []

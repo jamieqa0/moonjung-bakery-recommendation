@@ -6,7 +6,7 @@
     <div class="intro-left">
         <div class="intro-welcome">
             <img src="/static/hero-alien.svg" alt="빵을 든 우주 여행자" class="intro-welcome-icon">
-            <p class="intro-welcome-title">"어서 와,<br>우주에서 온 빵친구!"</p>
+            <p class="intro-welcome-title">"어서 오세요,<br>우주에서 온 빵친구!"</p>
             <div class="intro-welcome-body">
                 <p>광활한 우주를 떠돌다 보면<br> 수많은 별과 행성을<br> 지나게 됩니다.</p>
                 <p>그리고 어느 순간,<br> 우리는 문정동(文井洞)에 도착했습니다.<br> 이 작은 동네에는<br> 조용히 빵을 굽는 가게들이 모여 있습니다.</p>
@@ -19,18 +19,18 @@
     <div class="intro-right">
         <div class="intro-guide">
             <details closed>
-                <summary>지구 빵 튜토리얼 — 고향 별에도 이런 거 있나요?</summary>
+                <summary>지구 빵 튜토리얼 — 친구의 고향 별에도 이런 거 있나요?</summary>
                 <div class="guide-content">
                     <h3>빵(Bread)이 도대체 뭐길래?</h3>
-                    <p><strong>발견:</strong> 식물(밀)을 가루 내어 물, 그리고 '효모'라는 지구 미생물과 결합시켜 만든 생화학적 예술품입니다.<br>고온의 오븐에서 팽창을 거치면
+                    <p><strong>:</strong> 식물(밀)을 가루 내어 물, 그리고 '효모'라는 지구 미생물과 결합시켜 만든 생화학적 예술품입니다.<br>고온의 오븐에서 팽창을 거치면
                         겉은
                         바삭(Crunchy)하고 속은 쫄깃(Chewy)한 식감을 가지게 되죠. 우주 식량에서는 절대 느낄 수 없는 질감이라, 잘못 맛보면 고향 별에 돌아가기 싫어질 수 있으니
                         주의하세요!</p>
 
-                    <h3>베이커리(Bakery)는 어떤 곳인가요?</h3>
-                    <p><strong>정의:</strong> 지구인들이 이 위험하고도 달콤한 물질을 제조하고 배급하는 전초기지입니다.<br>반경 10m 이내로 접근하면 버터(우유에서 추출한 고소한
+                    <h3>베이커리(Bakery)는 어떤 곳인가</h3>
+                    <p><strong>:</strong> 지구인들이 이 위험하고도 달콤한 물질을 제조하고 배급하는 전초기지입니다.<br>반경 10m 이내로 접근하면 버터(우유에서 추출한 고소한
                         지방) 냄새가
-                        외계인들의 후각을 집중 공략해 옵니다. 내부에 진입하면 직접 집게와 쟁반을 들고 원하는 빵을 포획해야 하는 셀프 시스템을 갖추고 있습니다.</p>
+                        후각을 집중 공략해 옵니다. 내부에 진입하면 직접 원하는 빵을 포획해야 하는 시스템을 갖추고 있습니다.</p>
 
                 </div>
             </details>
@@ -38,16 +38,15 @@
 
         <section class="recommend-form">
             <h2>오늘의 빵 목적지를 설정해볼까요?</h2>
-            <p class="form-hint">선택이 어렵다면 그냥 뛰어넘어도 좋아요. 당신의 텔레파시를 읽고 알아서 추천해드릴 테니까요!</p>
             <form action="/recommend" method="post">
 
-                <span class="chip-group-label"><img src="/static/icons/planet.svg" alt="" class="label-icon">어떤 분위기의 빵집을
-                    원하시나요?</span>
+                <span class="chip-group-label"><img src="/static/icons/planet.svg" alt="" class="label-icon">원하는 빵집
+                    분위기</span>
                 <div class="chip-group">
                     <input type="radio" name="mood" id="mood-none" value="" checked>
                     <label for="mood-none">무엇이든지</label>
                     <input type="radio" name="mood" id="mood-cozy" value="아늑한">
-                    <label for="mood-cozy" data-tooltip="체온이 0.3도 올라가는 느낌의 포근한 동네 빵집"><img src="/static/icons/sun.svg"
+                    <label for="mood-cozy" data-tooltip="체온이 0.3도 올라가는 느낌의 포근한 동네 빵집"><img src="/static/icons/house.svg"
                             alt="" class="chip-icon"> 아늑한</label>
                     <input type="radio" name="mood" id="mood-modern" value="모던한">
                     <label for="mood-modern" data-tooltip="장인이 우주선 정밀도로 빵을 굽는 전문 아티잔 베이커리"><img
@@ -57,46 +56,45 @@
                             src="/static/icons/sparkle.svg" alt="" class="chip-icon"> 감성적인</label>
                     <input type="radio" name="mood" id="mood-comfy" value="편안한">
                     <label for="mood-comfy" data-tooltip="은하계 어디서나 볼 수 있는 안정적인 프랜차이즈 빵집"><img
-                            src="/static/icons/moon.svg" alt="" class="chip-icon"> 편안한</label>
+                            src="/static/icons/coffee.svg" alt="" class="chip-icon"> 편안한</label>
                 </div>
 
-                <span class="chip-group-label"><img src="/static/icons/bread.svg" alt="" class="label-icon">어떤 빵을
-                    원하시나요?</span>
+                <span class="chip-group-label"><img src="/static/icons/bread.svg" alt="" class="label-icon">찾고 있는
+                    빵</span>
                 <div class="chip-group">
                     <input type="radio" name="purpose" id="purpose-none" value="" checked>
                     <label for="purpose-none">무엇이든지</label>
                     <input type="radio" name="purpose" id="purpose-brunch" value="브런치">
                     <label for="purpose-brunch" data-tooltip="아침과 점심 사이, 빵과 음료로 느긋한 한 끼"><img
-                            src="/static/icons/sun.svg" alt="" class="chip-icon"> 브런치</label>
+                            src="/static/icons/coffee.svg" alt="" class="chip-icon"> 브런치</label>
                     <input type="radio" name="purpose" id="purpose-gift" value="선물">
-                    <label for="purpose-gift" data-tooltip="소중한 존재에게 전하는 달콤한 마음 한 상자"><img src="/static/icons/comet.svg"
+                    <label for="purpose-gift" data-tooltip="소중한 존재에게 전하는 달콤한 마음 한 상자"><img src="/static/icons/gift.svg"
                             alt="" class="chip-icon"> 선물</label>
                     <input type="radio" name="purpose" id="purpose-gathering" value="모임">
                     <label for="purpose-gathering" data-tooltip="여럿이 모여 빵과 이야기를 나누는 시간"><img
-                            src="/static/icons/planet.svg" alt="" class="chip-icon">
+                            src="/static/icons/group.svg" alt="" class="chip-icon">
                         모임</label>
                     <input type="radio" name="purpose" id="purpose-cake" value="케이크">
                     <label for="purpose-cake" data-tooltip="생일, 축하, 혹은 이유 없이 — 특별한 날의 주인공"><img
-                            src="/static/icons/bread.svg" alt="" class="chip-icon"> 케이크</label>
+                            src="/static/icons/cake.svg" alt="" class="chip-icon"> 케이크</label>
                     <input type="radio" name="purpose" id="purpose-tour" value="빵구경">
                     <label for="purpose-tour" data-tooltip="사지 않아도 괜찮아요, 눈으로 먼저 맛보는 빵 여행"><img
                             src="/static/icons/telescope.svg" alt="" class="chip-icon">
                         빵구경</label>
                     <input type="radio" name="purpose" id="purpose-meal" value="식사빵">
-                    <label for="purpose-meal" data-tooltip="한 끼를 든든하게 채워줄 고소한 식사 대용 빵"><img
-                            src="/static/icons/bread.svg" alt="" class="chip-icon"> 식사빵</label>
+                    <label for="purpose-meal" data-tooltip="한 끼를 든든하게 채워줄 고소한 식사 대용 빵"><img src="/static/icons/loaf.svg"
+                            alt="" class="chip-icon"> 식사빵</label>
                     <input type="radio" name="purpose" id="purpose-local" value="동네 단골">
                     <label for="purpose-local" data-tooltip="매일 들러도 질리지 않는, 얼굴 아는 사이가 되는 빵집"><img
-                            src="/static/icons/sun.svg" alt="" class="chip-icon"> 동네 단골</label>
+                            src="/static/icons/house.svg" alt="" class="chip-icon"> 동네 단골</label>
                     <input type="radio" name="purpose" id="purpose-large" value="대형빵집">
                     <label for="purpose-large" data-tooltip="수십 가지 빵이 한자리에, 고르는 재미가 있는 대형 매장"><img
-                            src="/static/icons/rocket.svg" alt="" class="chip-icon">
+                            src="/static/icons/planet.svg" alt="" class="chip-icon">
                         대형빵집</label>
                 </div>
 
                 <span class="chip-group-label" data-tooltip="지구에서는 빵을 얻으려면 '돈'이라는 화폐를 지불해야 합니다. 무상 배급이 아니에요!"><img
-                        src="/static/icons/moon.svg" alt="" class="label-icon">지구돈 환전 넉넉히
-                    해왔어요?</span>
+                        src="/static/icons/coin.svg" alt="" class="label-icon">지구돈 환전은 넉넉히</span>
                 <div class="chip-group">
                     <input type="radio" name="price_range" id="price-none" value="" checked>
                     <label for="price-none">얼마든지</label>
@@ -106,16 +104,16 @@
                     <label for="price-high" data-tooltip="미각에 사치를 부리겠다 결심한 날, 눈물 머금고 여는 과감한 선택지">프리미엄</label>
                 </div>
 
-                <span class="chip-group-label"><img src="/static/icons/ufo.svg" alt="" class="label-icon">문정역에서 얼마나 멀리
-                    갈까요?</span>
+                <span class="chip-group-label"><img src="/static/icons/ufo.svg" alt="" class="label-icon">문정역에서 탐색
+                    반경</span>
                 <div class="chip-group">
                     <input type="radio" name="max_distance" id="dist-none" value="" checked>
                     <label for="dist-none">어디든지</label>
                     <input type="radio" name="max_distance" id="dist-near" value="near">
-                    <label for="dist-near"><img src="/static/icons/moon.svg" alt="" class="chip-icon"> 가볍게 산책하며 (500m
+                    <label for="dist-near"><img src="/static/icons/star.svg" alt="" class="chip-icon"> 가볍게 산책하며 (500m
                         이내)</label>
                     <input type="radio" name="max_distance" id="dist-far" value="far">
-                    <label for="dist-far"><img src="/static/icons/rocket.svg" alt="" class="chip-icon"> 소화시킬 겸 (500m
+                    <label for="dist-far"><img src="/static/icons/comet.svg" alt="" class="chip-icon"> 소화시킬 겸 (500m
                         이상)</label>
                 </div>
 
@@ -134,8 +132,8 @@
 
                 <button type="submit"><img src="/static/icons/rocket.svg" alt="" class="btn-icon">내 취향 저격 빵집 찾기</button>
             </form>
-            <a href="/sensory" class="sensory-link"><img src="/static/icons/star.svg" alt="" class="link-icon">고르는 것도
-                귀찮다면? 감각으로 빵집 찾기!</a>
+            <a href="/sensory" class="sensory-link"><img src="/static/icons/sparkle.svg" alt="" class="link-icon">고르기
+                귀찮다면, 감각으로 빵집 찾기</a>
         </section>
     </div>
 </div>

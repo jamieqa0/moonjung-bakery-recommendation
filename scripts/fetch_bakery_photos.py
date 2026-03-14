@@ -10,6 +10,7 @@
     data/bakery_photos.json — {bakery_id: photo_url} 매핑 파일 생성
 """
 
+import io
 import json
 import os
 import sys
@@ -20,6 +21,7 @@ if sys.platform == "win32":
     sys.stdout.reconfigure(encoding="utf-8")
 
 from dotenv import load_dotenv
+from PIL import Image
 import requests
 
 load_dotenv(Path(__file__).resolve().parent.parent / ".env")
@@ -46,6 +48,12 @@ BLOCKED_URL_PATTERNS = [
     "simg.pstatic.net/static.map",  # 네이버 정적 지도 이미지
     "type=p100_100",              # 100x100 아이콘 크기
     "type=f50_50",                # 50x50 아이콘 크기
+    "kamp/source/",               # Kakao KAMP 서명 URL (베이커리 비관련 콘텐츠)
+    "cafeattach",                 # Daum 카페 첨부파일 (내용 예측 불가)
+    "rest_main_photo",            # 식당 공통 플레이스홀더 이미지
+    "daumcdn.net/news/",          # Daum 뉴스 기사 이미지 (빵집 비관련)
+    "daumcdn.net/blogfile/",      # Daum 구 블로그 파일 (품질 불안정)
+    "kpenews.com",                # 식품 뉴스 사이트 이미지
 ]
 
 
@@ -55,6 +63,11 @@ def _is_valid_url(url: str) -> bool:
     for pattern in BLOCKED_URL_PATTERNS:
         if pattern in url:
             return False
+
+    # PNG 파일 차단 (로고/일러스트가 많음, 실제 사진은 jpg/webp)
+    url_path = url.split("?")[0].lower()
+    if url_path.endswith(".png"):
+        return False
 
     # HEAD 요청으로 실제 이미지인지 확인 (referrer 없이)
     try:
@@ -76,6 +89,70 @@ def _is_valid_url(url: str) -> bool:
         return False
 
     return True
+
+
+# 따뜻한 색상 판별 기준 (HSV)
+# 빵/베이커리: 갈색, 황금색, 크림색, 베이지, 따뜻한 나무톤
+# H: 0~50 (빨강~주황~노랑 계열), S: 자유, V: 자유
+# 추가로 저채도 따뜻한 톤 (크림색, 베이지): S < 40, V > 150
+WARM_HUE_MIN = 0
+WARM_HUE_MAX = 50
+MIN_WARM_RATIO = 0.15  # 전체 픽셀 중 15% 이상이 따뜻한 톤이면 통과
+
+
+def _has_warm_tones(url: str) -> bool:
+    """이미지를 다운로드하여 갈색/따뜻한 색상 비율이 충분한지 판별한다."""
+    try:
+        resp = requests.get(
+            url, timeout=10, headers={"Referer": ""},
+            stream=True,
+        )
+        if resp.status_code != 200:
+            return False
+
+        # 메모리에서 이미지 열기, 축소해서 빠르게 분석
+        img = Image.open(io.BytesIO(resp.content))
+        img = img.convert("RGB")
+        img = img.resize((80, 80))  # 80x80으로 축소 (속도)
+
+        pixels = list(img.getdata())
+        total = len(pixels)
+        if total == 0:
+            return False
+
+        warm_count = 0
+        for r, g, b in pixels:
+            # RGB → HSV 간이 변환
+            max_c = max(r, g, b)
+            min_c = min(r, g, b)
+            diff = max_c - min_c
+
+            # 무채색(회색/흰색/검정)은 건너뜀
+            if diff < 15:
+                # 저채도지만 따뜻한 크림/베이지 (R > G > B, 밝은 톤)
+                if r > 150 and g > 130 and r >= g >= b and max_c > 170:
+                    warm_count += 1
+                continue
+
+            # Hue 계산
+            if max_c == r:
+                h = 60 * ((g - b) / diff % 6)
+            elif max_c == g:
+                h = 60 * ((b - r) / diff + 2)
+            else:
+                h = 60 * ((r - g) / diff + 4)
+            if h < 0:
+                h += 360
+
+            # 따뜻한 색상 범위: 0~50도 (빨강~주황~노랑)
+            if WARM_HUE_MIN <= h <= WARM_HUE_MAX:
+                warm_count += 1
+
+        ratio = warm_count / total
+        return ratio >= MIN_WARM_RATIO
+
+    except Exception:
+        return False
 
 
 def search_bakery_image(name: str, api_key: str) -> str:
@@ -100,7 +177,10 @@ def search_bakery_image(name: str, api_key: str) -> str:
             for doc in documents:
                 url = doc.get("image_url", "")
                 if url and _is_valid_url(url):
-                    return url
+                    if _has_warm_tones(url):
+                        return url
+                    else:
+                        print(f"    ✗ 따뜻한 톤 부족, 스킵: {url[:60]}...")
         except Exception as e:
             print(f"    오류 ({query}): {e}")
 
@@ -134,9 +214,12 @@ def main():
         # 이미 수집된 사진이 있고 유효하면 스킵
         if bakery_id in existing and existing[bakery_id]:
             if _is_valid_url(existing[bakery_id]):
-                print(f"  [{bakery_id}] {name} — 기존 사진 유지")
-                photos[bakery_id] = existing[bakery_id]
-                continue
+                if _has_warm_tones(existing[bakery_id]):
+                    print(f"  [{bakery_id}] {name} — 기존 사진 유지")
+                    photos[bakery_id] = existing[bakery_id]
+                    continue
+                else:
+                    print(f"  [{bakery_id}] {name} — 기존 사진 색상 부적합, 재검색...")
             else:
                 print(f"  [{bakery_id}] {name} — 기존 사진 깨짐, 재검색...")
 

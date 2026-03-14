@@ -67,7 +67,11 @@
         {% endif %}
 
         {% if kakao_js_key %}
-        <div id="detail-map" class="bakery-map"></div>
+        <div class="map-container">
+            <div id="detail-map" class="bakery-map"></div>
+            <div class="map-tint"></div>
+            <div class="map-vignette"></div>
+        </div>
         {% endif %}
     </div>
 
@@ -76,11 +80,21 @@
 
 {% if kakao_js_key %}
 <script>
+    var detailMarkerSvg = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(
+        '<svg xmlns="http://www.w3.org/2000/svg" width="36" height="46" viewBox="0 0 36 46">' +
+        '<defs><filter id="ds" x="-20%" y="-10%" width="140%" height="130%"><feDropShadow dx="0" dy="2" stdDeviation="2" flood-color="#2C1810" flood-opacity="0.2"/></filter></defs>' +
+        '<path d="M18 44C18 44 33 28 33 17A15 15 0 0 0 3 17C3 28 18 44 18 44Z" fill="#C8842A" filter="url(#ds)"/>' +
+        '<path d="M18 42C18 42 31 27 31 17A13 13 0 0 0 5 17C5 27 18 42 18 42Z" fill="#E8A84C"/>' +
+        '<circle cx="18" cy="17" r="10" fill="#FFF8EE"/>' +
+        '<circle cx="18" cy="17" r="4" fill="#C8842A"/>' +
+        '</svg>'
+    );
+
     function initMap() {
         try {
             if (typeof kakao === 'undefined' || typeof kakao.maps === 'undefined') {
                 document.getElementById('detail-map').innerHTML =
-                    '<p style="padding:2rem;text-align:center;color:#8A7668;">지도를 불러올 수 없습니다.</p>';
+                    '<p class="map-fallback">지도를 불러올 수 없습니다.</p>';
                 return;
             }
 
@@ -95,16 +109,27 @@
                 level: 3
             });
 
+            var imgSize = new kakao.maps.Size(36, 46);
+            var imgOpt = { offset: new kakao.maps.Point(18, 46) };
+            var markerImage = new kakao.maps.MarkerImage(detailMarkerSvg, imgSize, imgOpt);
+
             var marker = new kakao.maps.Marker({
                 position: new kakao.maps.LatLng(lat, lon),
-                map: map
+                map: map,
+                image: markerImage
             });
 
-            var info = new kakao.maps.InfoWindow({
-                content: '<div style="padding:5px 10px;font-size:12px;"><strong>' +
-                    {{ bakery.name | tojson }} + '</strong></div>'
+            var overlay = new kakao.maps.CustomOverlay({
+                position: new kakao.maps.LatLng(lat, lon),
+                content: '<div class="map-overlay-wrap">' +
+                    '<div class="map-overlay-card">' +
+                    '<div class="overlay-name">' + {{ bakery.name | tojson }} + '</div>' +
+                    '<div class="overlay-menu">' + {{ bakery.signature_menu | tojson }} + '</div>' +
+                    '</div></div>',
+                yAnchor: 1,
+                zIndex: 10
             });
-            info.open(map, marker);
+            overlay.setMap(map);
         } catch (e) {
             console.error('지도 초기화 실패:', e);
         }
