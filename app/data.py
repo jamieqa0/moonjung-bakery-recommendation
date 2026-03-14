@@ -596,7 +596,8 @@ def _build_bakeries() -> list[Bakery]:
             continue
         tags = extract_tags(raw["reviews"])
         image_url = _get_illust_url(raw["signature_menu"])
-        bakeries.append(Bakery(**raw, tags=tags, image_url=image_url))
+        photo_url = photos.get(str(raw["id"]), "")
+        bakeries.append(Bakery(**raw, tags=tags, image_url=image_url, photo_url=photo_url))
         seen_names.add(raw["name"])
 
     # 3. 공공데이터 CSV 추가분
@@ -605,7 +606,8 @@ def _build_bakeries() -> list[Bakery]:
             continue
         tags = extract_tags(raw["reviews"])
         image_url = _get_illust_url(raw["signature_menu"])
-        bakeries.append(Bakery(**raw, tags=tags, image_url=image_url))
+        photo_url = photos.get(str(raw["id"]), "")
+        bakeries.append(Bakery(**raw, tags=tags, image_url=image_url, photo_url=photo_url))
         seen_names.add(raw["name"])
 
     return bakeries

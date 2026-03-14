@@ -40,13 +40,14 @@ python -m pytest tests/test_recommender.py::TestRecommendBasicFilter::test_filte
 ## 아키텍처
 
 - **app/main.py** — FastAPI 앱 엔트리포인트. HTML 라우트(Jinja2)와 API 라우터 등록. `.env`에서 `KAKAO_JS_KEY` 로딩
-- **app/models.py** — Pydantic 모델: `Bakery`(image_url 필드 포함), `RecommendRequest`, `RecommendResponse`
-- **app/data.py** — 카카오맵 API 시드 데이터(10곳). `MOONJEONG_STATION = (127.1225, 37.4858)`. 대표 메뉴 키워드 기반 일러스트 자동 매핑(`_get_illust_url`). 공공데이터 CSV 로더는 데이터 품질 문제로 비활성화(코드 잔존)
+- **app/models.py** — Pydantic 모델: `Bakery`(image_url, photo_url 필드 포함), `RecommendRequest`, `RecommendResponse`
+- **app/data.py** — 카카오맵 API 시드 데이터(10곳). `MOONJEONG_STATION = (127.1225, 37.4858)`. 대표 메뉴 키워드 기반 일러스트 자동 매핑(`_get_illust_url`). `_load_bakery_photos()`로 `data/bakery_photos.json`에서 실제 사진 URL 로딩. 공공데이터 CSV 로더는 데이터 품질 문제로 비활성화(코드 잔존)
 - **app/recommender.py** — 추천 로직. 조건별 가중 점수 계산 후 정렬 반환
 - **app/review_analyzer.py** — 리뷰 키워드 → 태그 매핑 (`KEYWORD_TAG_MAP` 딕셔너리 기반)
 - **app/sensory.py** — 감각 기반 추천 매핑 (식감×맛→purpose, 분위기→mood)
 - **app/routers/** — API 엔드포인트 분리 (`cafes.py`→베이커리 라우터, `recommend.py`)
 - **scripts/fetch_public_data.py** — 서울 열린데이터광장 API 수집 스크립트
+- **scripts/fetch_bakery_photos.py** — 베이커리 사진 URL 수집 → `data/bakery_photos.json` 생성
 
 ### 추천 로직 (`recommender.recommend()`)
 
@@ -71,6 +72,7 @@ python -m pytest tests/test_recommender.py::TestRecommendBasicFilter::test_filte
 |--------|------|------|
 | GET | `/` | 메인 페이지 — 칩 기반 조건 선택 폼 (HTML) |
 | POST | `/recommend` | 폼 제출 → 2컬럼 결과 페이지: 카카오맵 + 카드 (HTML) |
+| GET | `/bakery/{id}` | 베이커리 상세 페이지 (HTML) |
 | GET | `/sensory` | 감각 기반 추천 폼 (HTML) |
 | POST | `/sensory` | 감각 폼 제출 → 결과 페이지 (HTML) |
 | GET | `/api/bakeries` | 전체 베이커리 목록 (JSON) |
@@ -83,6 +85,7 @@ python -m pytest tests/test_recommender.py::TestRecommendBasicFilter::test_filte
 - **templates/index.html** — 2컬럼: 좌(소개+히어로) / 우(튜토리얼 details/summary + 칩 선택 폼)
 - **templates/sensory.html** — 2컬럼: 좌(소개) / 우(3단계 이진 질문 폼)
 - **templates/results.html** — 3영역 그리드: top(제목) + left(카카오맵 sticky) + right(카드 리스트). 카드에 일러스트 이미지 표시. 카드 호버 시 마커 인포윈도우 연동
+- **templates/detail.html** — 베이커리 상세 페이지. 실제 사진(photo_url) + 일러스트 + 상세 정보 표시
 - **templates/404.html** — 커스텀 404 ("이 빵집은 아직 이 우주에 없어요")
 - **static/style.css** — 따뜻한 앰버/크러스트 색상 팔레트 (`--cream`, `--ink`, `--amber`, `--crust`). CSS Grid 2컬럼 레이아웃, 칩 그룹, 커스텀 라디오/체크박스
 - **static/icons/** — 카와이 스타일 우주 테마 SVG 아이콘 세트 (골든 앰버 #FBBD40 fill + 다크 퍼플 #3A1F54 outline). 헤더, 네비, 칩, 버튼, 폼 라벨 등에 사용

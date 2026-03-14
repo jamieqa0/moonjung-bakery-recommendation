@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none">
+  <!-- main sparkle -->
+  <path d="M24 6l3 12 12 3-12 3-3 12-3-12-12-3 12-3z" fill="#FBBD40" stroke="#3A1F54" stroke-width="2.5" stroke-linejoin="round"/>
+  <!-- face -->
+  <circle cx="21.5" cy="22.5" r="1.3" fill="#3A1F54"/>
+  <circle cx="26.5" cy="22.5" r="1.3" fill="#3A1F54"/>
+  <path d="M22.5 26q1.5 1.5 3 0" stroke="#3A1F54" stroke-width="1.3" stroke-linecap="round" fill="none"/>
+  <!-- small sparkle -->
+  <path d="M38 8l1 4 4 1-4 1-1 4-1-4-4-1 4-1z" fill="#FBBD40" stroke="#3A1F54" stroke-width="1.5" stroke-linejoin="round"/>
+  <!-- tiny sparkle -->
+  <path d="M8 34l1 3 3 1-3 1-1 3-1-3-3-1 3-1z" fill="#FBBD40" stroke="#3A1F54" stroke-width="1.2" stroke-linejoin="round"/>
+</svg>

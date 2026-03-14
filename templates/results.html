@@ -35,6 +35,7 @@
                     <div class="card-header">
                         {% if bakery.photo_url %}
                         <img src="{{ bakery.photo_url }}" alt="{{ bakery.name }}" class="card-photo"
+                            referrerpolicy="no-referrer"
                             onerror="this.onerror=null;this.src='{{ bakery.image_url }}';this.className='card-illust';">
                         {% else %}
                         <img src="{{ bakery.image_url }}" alt="{{ bakery.signature_menu }}" class="card-illust">

@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none">
+  <!-- cake body -->
+  <rect x="10" y="22" width="28" height="16" rx="3" fill="#FBBD40" stroke="#3A1F54" stroke-width="2.5"/>
+  <!-- frosting -->
+  <path d="M10 25c3-4 6 0 9-3s6 1 9-2 6 2 10-1" stroke="#3A1F54" stroke-width="2" stroke-linecap="round" fill="none"/>
+  <!-- candle -->
+  <rect x="22" y="14" width="4" height="8" rx="1.5" fill="#FBBD40" stroke="#3A1F54" stroke-width="2"/>
+  <!-- flame -->
+  <ellipse cx="24" cy="12" rx="2.5" ry="3.5" fill="#FBBD40" stroke="#3A1F54" stroke-width="1.8"/>
+  <!-- face -->
+  <circle cx="19" cy="30" r="1.5" fill="#3A1F54"/>
+  <circle cx="29" cy="30" r="1.5" fill="#3A1F54"/>
+  <path d="M22 34q2 2 4 0" stroke="#3A1F54" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+</svg>

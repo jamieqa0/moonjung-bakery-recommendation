@@ -130,6 +130,22 @@ Mah-Ze-Dahr Bakery (Awwwards) 스타일 지향.
 
 ---
 
+### Phase 16. 디자인 깊이감 개선
+
+CSS-only 변경으로 플랫한 디자인에 깊이감, 인터랙션, 시각적 완성도 추가.
+
+- **엘리베이션 시스템** — `--shadow-sm/md/lg/glow`, `--radius-sm/md`, `--transition-spring` 변수 도입
+- **카드 리디자인** — 기본 그림자 + 호버 시 `translateY(-4px)` + `shadow-lg`, 좌측 바 항상 표시(호버 시 amber), 일러스트 72→96px + 호버 스케일, CSS counter 번호 배지, 태그 호버 효과
+- **버튼 & 칩** — active 눌림 효과, focus-visible 아웃라인(접근성), 칩 선택 시 `scale(1.03)` + 스프링 이징
+- **폼/섹션 깊이감** — recommend-form, sensory-form, intro-welcome에 `shadow-md`, details open 시 그림자 전환
+- **배경 텍스처** — body에 미세한 radial-gradient 오버레이
+- **헤더/푸터** — 헤더 상단 amber 그라데이션, 푸터 가운데서 퍼지는 amber 라인 애니메이션
+- **상세 페이지** — 일러스트 80→100px, 리뷰 호버 시 좌측 amber 바 + 인덴트
+- **cardSlideIn 애니메이션** — scale(0.98)→1 등장 효과
+- **초대 메시지** — 그라데이션 배경 강화 + 장식용 큰따옴표
+
+---
+
 ## 향후 작업
 
 ### 기능 확장
@@ -143,9 +159,9 @@ Mah-Ze-Dahr Bakery (Awwwards) 스타일 지향.
 - [x] ~~베이커리 상세 페이지 (`/bakery/{id}`)~~ — 상세 페이지 추가, 결과 카드에서 링크 연결
 - [ ] 사용자 리뷰 등록 → 태그 실시간 재계산
 - [x] ~~**베이커리 이미지**~~ — `photo_url` 필드 추가, 카카오 이미지 검색 API 스크립트(`scripts/fetch_bakery_photos.py`)로 수집, `data/bakery_photos.json`에 저장. 사진 있으면 표시, 없으면 SVG 일러스트 폴백
-- [ ] **디자인 밋밋** — 디자인이 너무 밋밋함 레퍼런스 참고해서 개선
+- [x] ~~**디자인 밋밋**~~ — Phase 16에서 엘리베이션·인터랙션·텍스처 개선 완료
 - [x] ~~**폰트일관성**~~ — 8단계 타입 스케일(--text-xs~3xl) 정의, 23종 font-size를 CSS 변수로 통일
-- [ ] **베이커리 이미지 개선** —  `data/bakery_photos.json`에 10개 뿐이네 개선할수 없는지 조사
+- [x] ~~**베이커리 이미지 개선**~~ — 전체 52곳 대상으로 확대 (기존 시드 10곳만 수집 → 전체). 스크립트 검증 강화(스티커/지도이미지/깨진URL 필터링), 검색어 다양화, `referrerpolicy="no-referrer"` 핫링크 차단 우회. 사진 없는 곳은 SVG 일러스트 자동 폴백. 최종 30/52곳 실사진 적용
 
 ### 기술 개선
 
