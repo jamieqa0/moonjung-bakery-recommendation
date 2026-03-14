@@ -142,7 +142,7 @@ class TestScoreCalculation:
             sample_bakeries,
             mood="아늑한",
             purpose="브런치",
-            price_range="중가",
+            price_range="일반",
             parking=True,
             custom_order=True,
         )

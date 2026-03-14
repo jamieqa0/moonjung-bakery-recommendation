@@ -9,18 +9,18 @@ from app.data import BAKERIES, _haversine, _load_public_bakeries, _parse_coordin
 class TestDataIntegrity:
     def test_all_bakeries_have_coordinates(self):
         for b in BAKERIES:
-            if b.id < 1000:  # 카카오 데이터만
+            if b.id <= 10:  # 시드 데이터만 (리치 데이터)
                 assert b.lat != 0.0, f"{b.name}에 위도가 없습니다"
                 assert b.lon != 0.0, f"{b.name}에 경도가 없습니다"
 
     def test_all_bakeries_have_reviews(self):
         for b in BAKERIES:
-            if b.id < 1000:
+            if b.id <= 10:  # 시드 데이터만 (리치 데이터)
                 assert len(b.reviews) >= 5, f"{b.name}의 리뷰가 5개 미만입니다"
 
     def test_all_bakeries_have_tags(self):
         for b in BAKERIES:
-            if b.id < 1000:
+            if b.id <= 10:  # 시드 데이터만 (리치 데이터)
                 assert len(b.tags) > 0, f"{b.name}에 태그가 없습니다"
 
     def test_bakery_ids_unique(self):

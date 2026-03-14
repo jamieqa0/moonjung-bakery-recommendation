@@ -1,3 +1,4 @@
+import json
 import math
 import os
 
@@ -33,7 +34,7 @@ _RAW_BAKERIES = [
         "purpose": ["빵구경", "브런치"],
         "signature_menu": "소금빵",
         "flavor_profile": "겉은 바삭, 속에서 짭짤한 버터가 흘러나온다. 한 입이면 지구가 좋아진다.",
-        "price_range": "중가",
+        "price_range": "일반",
         "rating": 4.6,
         "description": "문정역 바로 앞, 갓 구운 빵 향이 퍼지는 동네 명소",
         "parking": False,
@@ -53,11 +54,11 @@ _RAW_BAKERIES = [
         "id": 2,
         "name": "오밀조밀베이크샵",
         "address": "서울 송파구 동남로2길 27-16",
-        "mood": ["아늑한", "빈티지한"],
+        "mood": ["아늑한"],
         "purpose": ["빵구경", "선물"],
         "signature_menu": "앙버터 스콘",
         "flavor_profile": "겉은 바삭하고 속은 촉촉한 스콘에 달콤한 앙금과 버터 한 덩이. 완벽한 조합.",
-        "price_range": "중가",
+        "price_range": "일반",
         "rating": 4.4,
         "description": "골목 안 숨은 수제 베이커리. 소량 생산의 정성.",
         "parking": False,
@@ -81,7 +82,7 @@ _RAW_BAKERIES = [
         "purpose": ["케이크", "선물"],
         "signature_menu": "플라워 레터링 케이크",
         "flavor_profile": "부드러운 시트 위에 생크림 꽃이 핀다. 보는 것만으로도 행복해지는 맛.",
-        "price_range": "고가",
+        "price_range": "프리미엄",
         "rating": 4.7,
         "description": "꽃 장식 주문 제작 케이크 전문. 예약 필수.",
         "parking": False,
@@ -105,7 +106,7 @@ _RAW_BAKERIES = [
         "purpose": ["브런치", "빵구경"],
         "signature_menu": "크루아상",
         "flavor_profile": "겹겹이 쌓인 페이스트리가 입안에서 사르르 녹는다. 버터 향의 정수.",
-        "price_range": "고가",
+        "price_range": "프리미엄",
         "rating": 4.5,
         "description": "프렌치 스타일 아티잔 베이커리. 크루아상의 성지.",
         "parking": False,
@@ -129,7 +130,7 @@ _RAW_BAKERIES = [
         "purpose": ["빵구경", "브런치"],
         "signature_menu": "우유 식빵",
         "flavor_profile": "폭신하고 부드러운 식빵에서 은은한 우유 향이 난다. 소박하지만 자꾸 생각나는 맛.",
-        "price_range": "저가",
+        "price_range": "일반",
         "rating": 4.3,
         "description": "동네 단골들이 매일 찾는 가성비 빵집",
         "parking": False,
@@ -153,7 +154,7 @@ _RAW_BAKERIES = [
         "purpose": ["브런치", "선물"],
         "signature_menu": "버터크루아상",
         "flavor_profile": "겉은 바삭, 속은 겹겹이 부드러운 버터 향. 한 입 베어 물면 고소한 바람이 분다.",
-        "price_range": "중가",
+        "price_range": "일반",
         "rating": 4.0,
         "description": "언제나 믿을 수 있는 프랜차이즈 빵집",
         "parking": True,
@@ -173,11 +174,11 @@ _RAW_BAKERIES = [
         "id": 7,
         "name": "8084제빵소",
         "address": "서울 송파구 송파대로 155",
-        "mood": ["빈티지한", "감성적인"],
+        "mood": ["모던한", "감성적인"],
         "purpose": ["빵구경", "모임"],
         "signature_menu": "통밀 캄파뉴",
         "flavor_profile": "투박한 겉면 아래 촉촉하고 쫀득한 속살. 씹을수록 고소한 곡물 향이 퍼진다.",
-        "price_range": "고가",
+        "price_range": "프리미엄",
         "rating": 4.5,
         "description": "천연 발효종으로 만드는 정통 수제 빵",
         "parking": False,
@@ -201,7 +202,7 @@ _RAW_BAKERIES = [
         "purpose": ["케이크", "선물", "모임"],
         "signature_menu": "딸기 생크림 케이크",
         "flavor_profile": "신선한 딸기의 상큼함과 생크림의 부드러움. 보는 것만으로도 행복해지는 맛.",
-        "price_range": "고가",
+        "price_range": "프리미엄",
         "rating": 4.6,
         "description": "정성껏 만드는 주문 제작 케이크 전문점",
         "parking": True,
@@ -225,7 +226,7 @@ _RAW_BAKERIES = [
         "purpose": ["브런치", "빵구경"],
         "signature_menu": "생크림케이크",
         "flavor_profile": "폭신한 시트 위에 부드러운 생크림. 달콤하지만 무겁지 않아서 자꾸 손이 간다.",
-        "price_range": "중가",
+        "price_range": "일반",
         "rating": 3.9,
         "description": "다양한 빵이 매일 신선하게 나오는 프랜차이즈 베이커리",
         "parking": True,
@@ -249,7 +250,7 @@ _RAW_BAKERIES = [
         "purpose": ["빵구경", "선물"],
         "signature_menu": "크림치즈빵",
         "flavor_profile": "바삭한 겉면 안에 진한 크림치즈가 가득. 한 입 베어 물면 고소한 행복이 터진다.",
-        "price_range": "중가",
+        "price_range": "일반",
         "rating": 4.2,
         "description": "대전 명물 삼송빵집의 문정동 분점. 줄 서서 사가는 인기 맛집.",
         "parking": True,
@@ -374,22 +375,22 @@ def _load_public_bakeries() -> list[dict]:
                 purpose = ["케이크", "선물"]
                 mood = ["감성적인"]
                 sig_menu = "케이크"
-                price = "중가"
+                price = "일반"
             elif "마카롱" in biz_name or "타르트" in biz_name:
                 purpose = ["선물", "빵구경"]
                 mood = ["감성적인"]
                 sig_menu = "마카롱" if "마카롱" in biz_name else "타르트"
-                price = "중가"
+                price = "일반"
             elif "크루아상" in biz_name or "베이커리" in biz_name or "빵" in biz_name:
                 purpose = ["빵구경", "브런치"]
                 mood = ["아늑한"]
                 sig_menu = "크루아상" if "크루아상" in biz_name else "대표 빵"
-                price = "중가"
+                price = "일반"
             else:
                 purpose = ["빵구경"]
                 mood = ["편안한"]
                 sig_menu = "대표 빵"
-                price = "중가"
+                price = "일반"
 
             # 공공데이터에 평점 없으므로 기본 3.5 부여 (추천 점수에 참여하도록)
             public_bakeries.append({
@@ -416,12 +417,169 @@ def _load_public_bakeries() -> list[dict]:
         return []
 
 
+# 카카오 JSON에서 제외할 비빵집 카테고리/이름 패턴
+_EXCLUDE_CATEGORIES = ["애견카페", "기업"]
+_EXCLUDE_NAMES = ["고로케", "쌀고로케"]
+
+
+def _infer_attributes(name: str, category: str) -> dict:
+    """카카오 JSON 업체명/카테고리에서 mood, purpose, signature_menu 등을 추론한다."""
+    name_lower = name.lower()
+
+    if any(k in name_lower for k in ["케이크", "칼미아"]):
+        return {
+            "mood": ["감성적인"],
+            "purpose": ["케이크", "선물"],
+            "signature_menu": "케이크",
+            "price_range": "일반",
+            "custom_order": True,
+        }
+    if any(k in name_lower for k in ["마카롱", "타르트"]):
+        return {
+            "mood": ["감성적인"],
+            "purpose": ["선물", "빵구경"],
+            "signature_menu": "마카롱" if "마카롱" in name_lower else "타르트",
+            "price_range": "일반",
+            "custom_order": False,
+        }
+    if any(k in name_lower for k in ["크루아상", "브레드", "아티장"]):
+        return {
+            "mood": ["모던한"],
+            "purpose": ["빵구경", "브런치"],
+            "signature_menu": "크루아상",
+            "price_range": "일반",
+            "custom_order": False,
+        }
+    if any(k in name_lower for k in ["호두", "붕어빵", "꽈배기"]):
+        return {
+            "mood": ["편안한"],
+            "purpose": ["빵구경"],
+            "signature_menu": "대표 간식",
+            "price_range": "일반",
+            "custom_order": False,
+        }
+    if "방앗간" in name_lower:
+        return {
+            "mood": ["편안한"],
+            "purpose": ["빵구경", "선물"],
+            "signature_menu": "떡·한과",
+            "price_range": "일반",
+            "custom_order": False,
+        }
+    if any(k in name_lower for k in ["와플"]):
+        return {
+            "mood": ["편안한"],
+            "purpose": ["빵구경", "브런치"],
+            "signature_menu": "와플",
+            "price_range": "일반",
+            "custom_order": False,
+        }
+    # 프랜차이즈 판별
+    franchises = ["파리바게뜨", "뚜레쥬르", "한스", "삼송", "아티제"]
+    if any(f in name_lower for f in franchises):
+        return {
+            "mood": ["편안한", "모던한"],
+            "purpose": ["브런치", "선물"],
+            "signature_menu": "대표 빵",
+            "price_range": "일반",
+            "custom_order": False,
+        }
+    # 기본: 동네 베이커리
+    return {
+        "mood": ["아늑한"],
+        "purpose": ["빵구경", "브런치"],
+        "signature_menu": "대표 빵",
+        "price_range": "일반",
+        "custom_order": False,
+    }
+
+
+def _load_kakao_bakeries() -> list[dict]:
+    """카카오 API JSON 파일에서 추가 베이커리를 로드한다."""
+    json_path = os.path.join(os.path.dirname(__file__), "..", "data", "kakao_bakeries.json")
+    if not os.path.exists(json_path):
+        return []
+
+    try:
+        with open(json_path, "r", encoding="utf-8") as f:
+            places = json.load(f)
+    except Exception:
+        return []
+
+    # 시드 데이터 이름 목록 (중복 방지)
+    seed_names = {b["name"] for b in _RAW_BAKERIES}
+
+    kakao_bakeries = []
+    next_id = 100  # 카카오 추가분은 100번대 ID
+
+    for place in places:
+        name = place["name"]
+        category = place.get("category", "")
+
+        # 이미 시드에 있으면 스킵
+        if name in seed_names:
+            continue
+
+        # 비빵집 제외
+        if any(exc in category for exc in _EXCLUDE_CATEGORIES):
+            continue
+        if any(exc in name for exc in _EXCLUDE_NAMES):
+            continue
+
+        attrs = _infer_attributes(name, category)
+
+        kakao_bakeries.append({
+            "id": next_id,
+            "name": name,
+            "address": place.get("address", ""),
+            "mood": attrs["mood"],
+            "purpose": attrs["purpose"],
+            "signature_menu": attrs["signature_menu"],
+            "flavor_profile": "",
+            "price_range": attrs["price_range"],
+            "rating": 4.0,
+            "description": f"문정동 인근 베이커리",
+            "parking": False,
+            "custom_order": attrs["custom_order"],
+            "distance": place.get("distance_km", 0.0),
+            "lat": place.get("lat", 0.0),
+            "lon": place.get("lon", 0.0),
+            "reviews": [],
+        })
+        next_id += 1
+
+    return kakao_bakeries
+
+
 def _build_bakeries() -> list[Bakery]:
     bakeries = []
+
+    # 1. 시드 데이터 (리치 데이터: 리뷰, 맛 프로필 등 보유)
     for raw in _RAW_BAKERIES:
         tags = extract_tags(raw["reviews"])
         image_url = _get_illust_url(raw["signature_menu"])
         bakeries.append(Bakery(**raw, tags=tags, image_url=image_url))
+
+    seen_names = {b.name for b in bakeries}
+
+    # 2. 카카오 API JSON 추가분
+    for raw in _load_kakao_bakeries():
+        if raw["name"] in seen_names:
+            continue
+        tags = extract_tags(raw["reviews"])
+        image_url = _get_illust_url(raw["signature_menu"])
+        bakeries.append(Bakery(**raw, tags=tags, image_url=image_url))
+        seen_names.add(raw["name"])
+
+    # 3. 공공데이터 CSV 추가분
+    for raw in _load_public_bakeries():
+        if raw["name"] in seen_names:
+            continue
+        tags = extract_tags(raw["reviews"])
+        image_url = _get_illust_url(raw["signature_menu"])
+        bakeries.append(Bakery(**raw, tags=tags, image_url=image_url))
+        seen_names.add(raw["name"])
+
     return bakeries
 
 

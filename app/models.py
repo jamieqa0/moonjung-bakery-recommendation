@@ -8,7 +8,7 @@ class Bakery(BaseModel):
     mood: list[str]        # 예: ["아늑한", "모던한"]
     purpose: list[str]     # 예: ["브런치", "선물", "케이크"]
     signature_menu: str
-    price_range: str       # "저가" / "중가" / "고가"
+    price_range: str       # "일반" / "프리미엄"
     rating: float
     description: str
     parking: bool = False         # 주차 가능 여부
@@ -29,6 +29,7 @@ class RecommendRequest(BaseModel):
     parking: bool | None = None
     custom_order: bool | None = None
     max_distance: float | None = None
+    min_distance: float | None = None
 
 
 class RecommendResponse(BaseModel):

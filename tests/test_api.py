@@ -38,7 +38,7 @@ class TestRecommendAPI:
     def test_recommend_with_all_filters(self, client):
         response = client.post(
             "/api/recommend",
-            json={"mood": "아늑한", "purpose": "브런치", "price_range": "중가"},
+            json={"mood": "아늑한", "purpose": "브런치", "price_range": "일반"},
         )
         assert response.status_code == 200
 

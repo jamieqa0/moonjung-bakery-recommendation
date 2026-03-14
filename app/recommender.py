@@ -11,6 +11,7 @@ def recommend(
     parking: bool | None = None,
     custom_order: bool | None = None,
     max_distance: float | None = None,
+    min_distance: float | None = None,
     max_results: int = 5,
 ) -> list[Bakery]:
     # 1. 불리언/거리 필터링
@@ -21,6 +22,8 @@ def recommend(
         filtered = [b for b in filtered if b.custom_order == custom_order]
     if max_distance is not None:
         filtered = [b for b in filtered if b.distance <= max_distance]
+    if min_distance is not None:
+        filtered = [b for b in filtered if b.distance >= min_distance]
 
     # 2. 점수 계산
     scored: list[tuple[float, Bakery]] = []

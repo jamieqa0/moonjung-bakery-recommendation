@@ -35,19 +35,17 @@
                     <h3>'분위기'는 또 뭔가요?</h3>
                     <p>지구인들은 단순히 에너지만 섭취하지 않고 주변의 빛, 온도, 건축 형태로부터 시각적·감정적 에너지를 동시에 충전합니다. 우리는 이를 '분위기'라고 부릅니다.</p>
                     <ul>
-                        <li><strong>아늑한</strong> — 지구인의 체온(36.5도)을 따뜻하게 유지해주며 낯선 중력에 지친 몸을 뉘일 수 있는 포근한 둥지 느낌</li>
-                        <li><strong>모던한</strong> — 차가운 금속과 유리가 만나 우주선 내부처럼 매끈하고 논리적인 디자인</li>
-                        <li><strong>빈티지한</strong> — 과거 낡은 물건들을 배치해, 시공간을 거슬러 올라간 듯한 레트로(Retro) 마니아들의 성지</li>
-                        <li><strong>감성적인</strong> — 지구인들이 'SNS(가상 소통망)'에 시각 기록을 남기기 좋도록 특수 조명을 설치해 둔 곳</li>
-                        <li><strong>편안한</strong> — 중력을 거스르지 않고 푹신한 구조물(소파)에 한없이 늘어져 있기 좋은 환경</li>
+                        <li><strong>아늑한</strong> — 소규모 동네 빵집. 지구인의 체온(36.5도)을 따뜻하게 유지해주며, 매일 들러도 질리지 않는 포근한 둥지 느낌</li>
+                        <li><strong>모던한</strong> — 전문 아티잔 베이커리. 장인이 우주선 제조 수준의 정밀함으로 빵을 굽는 곳. 매끈한 인테리어와 높은 퀄리티</li>
+                        <li><strong>감성적인</strong> — 포토제닉한 빵집. 지구인들이 'SNS(가상 소통망)'에 시각 기록을 남기기 좋도록 특수 조명과 예쁜 빵을 갖춘 곳</li>
+                        <li><strong>편안한</strong> — 프랜차이즈 빵집. 은하계 어디서나 볼 수 있는 체인점처럼, 접근성 좋고 안정적인 맛을 보장하는 곳</li>
                     </ul>
 
                     <h3>지갑 사정 (가격대)</h3>
                     <p>지구, 문정동은 무상 배급시스템이 아닙니다. 원하는 빵을 얻으려면 지구 화폐를 지불해야 합니다.</p>
                     <ul>
-                        <li><strong>저가 (~1만원)</strong> — 지구 체류 예산이 넉넉하지 않은 탐험가도 매일 1일 1빵 할 수 있는 갓성비 구간</li>
-                        <li><strong>중가 (~2만원)</strong> — 평범한 지구인들이 일상적으로 에너지와 맞바꾸는 가장 평균적인 예산</li>
-                        <li><strong>고가 (3만원~)</strong> — 오늘은 미각에 사치를 부려보겠다 결심한 날, 눈물 머금고 열어야 하는 과감한 선택지</li>
+                        <li><strong>일반</strong> — 평범한 지구인들이 일상적으로 에너지와 맞바꾸는 가장 평균적인 예산</li>
+                        <li><strong>프리미엄</strong> — 오늘은 미각에 사치를 부려보겠다 결심한 날, 눈물 머금고 열어야 하는 과감한 선택지</li>
                     </ul>
                 </div>
             </details>
@@ -67,9 +65,6 @@
                     <label for="mood-cozy"><img src="/static/icons/sun.svg" alt="" class="chip-icon"> 아늑한</label>
                     <input type="radio" name="mood" id="mood-modern" value="모던한">
                     <label for="mood-modern"><img src="/static/icons/rocket.svg" alt="" class="chip-icon"> 모던한</label>
-                    <input type="radio" name="mood" id="mood-vintage" value="빈티지한">
-                    <label for="mood-vintage"><img src="/static/icons/telescope.svg" alt="" class="chip-icon">
-                        빈티지한</label>
                     <input type="radio" name="mood" id="mood-emotional" value="감성적인">
                     <label for="mood-emotional"><img src="/static/icons/star.svg" alt="" class="chip-icon"> 감성적인</label>
                     <input type="radio" name="mood" id="mood-comfy" value="편안한">
@@ -100,23 +95,22 @@
                 <div class="chip-group">
                     <input type="radio" name="price_range" id="price-none" value="" checked>
                     <label for="price-none">무엇이든</label>
-                    <input type="radio" name="price_range" id="price-low" value="저가">
-                    <label for="price-low">저가 (~1만원)</label>
-                    <input type="radio" name="price_range" id="price-mid" value="중가">
-                    <label for="price-mid">중가 (~2만원)</label>
-                    <input type="radio" name="price_range" id="price-high" value="고가">
-                    <label for="price-high">고가 (3만원~)</label>
+                    <input type="radio" name="price_range" id="price-mid" value="일반">
+                    <label for="price-mid">일반</label>
+                    <input type="radio" name="price_range" id="price-high" value="프리미엄">
+                    <label for="price-high">프리미엄</label>
                 </div>
 
-                <span class="select-group-label"><img src="/static/icons/ufo.svg" alt="" class="label-icon">문정역에서 얼마나 멀리
+                <span class="chip-group-label"><img src="/static/icons/ufo.svg" alt="" class="label-icon">문정역에서 얼마나 멀리
                     갈까요?</span>
-                <select name="max_distance" id="max_distance">
-                    <option value="">맛있다면 어디든 상관없어요</option>
-                    <option value="0.3">엎어지면 코 닿을 거리 (300m 이내)</option>
-                    <option value="0.5">가볍게 산책할 겸 다녀올 거리 (500m 이내)</option>
-                    <option value="1.0">소화 시킬 겸 다녀올 거리 (1km 이내)</option>
-                    <option value="2.0">후닥 뛰어 올 거리 (2km 이내)</option>
-                </select>
+                <div class="chip-group">
+                    <input type="radio" name="max_distance" id="dist-none" value="" checked>
+                    <label for="dist-none">무엇이든</label>
+                    <input type="radio" name="max_distance" id="dist-near" value="near">
+                    <label for="dist-near"><img src="/static/icons/moon.svg" alt="" class="chip-icon"> 가볍게 산책하며 다녀올 거리 (500m 이내)</label>
+                    <input type="radio" name="max_distance" id="dist-far" value="far">
+                    <label for="dist-far"><img src="/static/icons/rocket.svg" alt="" class="chip-icon"> 소화시킬 겸 다녀올 거리 (500m 이상)</label>
+                </div>
 
                 <div class="checkbox-group">
                     <label class="checkbox-label">

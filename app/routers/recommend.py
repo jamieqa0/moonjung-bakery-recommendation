@@ -17,5 +17,6 @@ def recommend_bakeries(req: RecommendRequest):
         parking=req.parking,
         custom_order=req.custom_order,
         max_distance=req.max_distance,
+        min_distance=req.min_distance,
     )
     return RecommendResponse(bakeries=results, total=len(results))
