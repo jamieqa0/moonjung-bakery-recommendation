@@ -20,6 +20,7 @@ class Bakery(BaseModel):
     image_url: str = ""            # 빵집 일러스트 이미지 경로
     reviews: list[str] = []
     tags: list[str] = []          # 리뷰 분석으로 생성된 특징 태그
+    kakao_id: str = ""           # 카카오 플레이스 ID
 
 
 class RecommendRequest(BaseModel):

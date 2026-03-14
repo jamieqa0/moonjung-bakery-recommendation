@@ -24,6 +24,13 @@ def _get_illust_url(signature_menu: str) -> str:
 # 문정역 좌표
 MOONJEONG_STATION = (127.1225, 37.4858)  # (lon, lat)
 
+"""
+[데이터 관리 가이드]
+1. 평점 업데이트: _RAW_BAKERIES 리스트에서 각 업체의 "rating" 값을 수정하세요.
+2. 카카오 플레이스 연결: "kakao_id"를 업데이트하면 결과 페이지에서 [·] 버튼이 해당 페이지로 연결됩니다.
+3. 데이터 출처: 현재 평점은 2026-03-14 수동 확인 결과(일부)를 반영하고 있습니다.
+"""
+
 # 카카오맵 API로 수집한 실제 문정동 베이커리 데이터 (2026-03-12 기준)
 _RAW_BAKERIES = [
     {
@@ -31,11 +38,11 @@ _RAW_BAKERIES = [
         "name": "더 브레드 레지던스",
         "address": "서울 송파구 문정로 19",
         "mood": ["모던한", "감성적인"],
-        "purpose": ["빵구경", "브런치"],
+        "purpose": ["빵구경", "브런치", "식사빵"],
         "signature_menu": "소금빵",
         "flavor_profile": "겉은 바삭, 속에서 짭짤한 버터가 흘러나온다. 한 입이면 지구가 좋아진다.",
         "price_range": "일반",
-        "rating": 4.6,
+        "rating": 4.2,
         "description": "문정역 바로 앞, 갓 구운 빵 향이 퍼지는 동네 명소",
         "parking": False,
         "custom_order": False,
@@ -49,13 +56,14 @@ _RAW_BAKERIES = [
             "브런치 세트가 든든하고 샌드위치 추천",
             "선물용 포장도 깔끔하게 해줘요",
         ],
+        "kakao_id": "2088789791",
     },
     {
         "id": 2,
         "name": "오밀조밀베이크샵",
         "address": "서울 송파구 동남로2길 27-16",
         "mood": ["아늑한"],
-        "purpose": ["빵구경", "선물"],
+        "purpose": ["빵구경", "선물", "동네 단골"],
         "signature_menu": "앙버터 스콘",
         "flavor_profile": "겉은 바삭하고 속은 촉촉한 스콘에 달콤한 앙금과 버터 한 덩이. 완벽한 조합.",
         "price_range": "일반",
@@ -73,6 +81,7 @@ _RAW_BAKERIES = [
             "포장도 예쁘게 해줘서 선물하기 좋아요",
             "브런치로 토스트 세트 강추",
         ],
+        "kakao_id": "636209233",
     },
     {
         "id": 3,
@@ -97,6 +106,7 @@ _RAW_BAKERIES = [
             "레이어 케이크 시트가 폭신해요",
             "마카롱도 판매하는데 꼬끄가 맛있어요",
         ],
+        "kakao_id": "1856377911",
     },
     {
         "id": 4,
@@ -121,13 +131,14 @@ _RAW_BAKERIES = [
             "브런치 세트에 샌드위치가 맛있어요",
             "가격은 좀 있지만 퀄리티로 보면 가성비 좋아요",
         ],
+        "kakao_id": "1174657889",
     },
     {
         "id": 5,
         "name": "그라동빵집",
         "address": "서울 송파구 동남로8길 29",
         "mood": ["아늑한", "편안한"],
-        "purpose": ["빵구경", "브런치"],
+        "purpose": ["빵구경", "브런치", "동네 단골"],
         "signature_menu": "우유 식빵",
         "flavor_profile": "폭신하고 부드러운 식빵에서 은은한 우유 향이 난다. 소박하지만 자꾸 생각나는 맛.",
         "price_range": "일반",
@@ -145,6 +156,7 @@ _RAW_BAKERIES = [
             "샌드위치도 있어서 브런치로 좋아요",
             "아침에 줄 서서 사가는 사람도 있어요",
         ],
+        "kakao_id": "791885497",
     },
     {
         "id": 6,
@@ -169,13 +181,14 @@ _RAW_BAKERIES = [
             "토스트랑 커피 세트가 브런치로 딱이에요",
             "마카롱도 꽤 괜찮아요 종류가 다양함",
         ],
+        "kakao_id": "8114437",
     },
     {
         "id": 7,
         "name": "8084제빵소",
         "address": "서울 송파구 송파대로 155",
         "mood": ["모던한", "감성적인"],
-        "purpose": ["빵구경", "모임"],
+        "purpose": ["빵구경", "모임", "식사빵"],
         "signature_menu": "통밀 캄파뉴",
         "flavor_profile": "투박한 겉면 아래 촉촉하고 쫀득한 속살. 씹을수록 고소한 곡물 향이 퍼진다.",
         "price_range": "프리미엄",
@@ -193,6 +206,7 @@ _RAW_BAKERIES = [
             "주말에 웨이팅 있지만 기다릴 만해요",
             "스콘과 토스트도 맛있어서 브런치로 좋아요",
         ],
+        "kakao_id": "1219420225",
     },
     {
         "id": 8,
@@ -217,17 +231,18 @@ _RAW_BAKERIES = [
             "마카롱도 판매하는데 꼬끄가 쫀득해요",
             "따뜻하고 아늑한 분위기에서 케이크 고르기 좋아요",
         ],
+        "kakao_id": "285644079",
     },
     {
         "id": 9,
         "name": "뚜레쥬르 카페송파파크하비오점",
         "address": "서울 송파구 송파대로 111",
         "mood": ["편안한"],
-        "purpose": ["브런치", "빵구경"],
+        "purpose": ["브런치", "빵구경", "대형빵집"],
         "signature_menu": "생크림케이크",
         "flavor_profile": "폭신한 시트 위에 부드러운 생크림. 달콤하지만 무겁지 않아서 자꾸 손이 간다.",
         "price_range": "일반",
-        "rating": 3.9,
+        "rating": 4.1,
         "description": "다양한 빵이 매일 신선하게 나오는 프랜차이즈 베이커리",
         "parking": True,
         "custom_order": True,
@@ -241,13 +256,14 @@ _RAW_BAKERIES = [
             "아침에 토스트 사가기 좋아요 브런치 느낌",
             "가격 대비 퀄리티 좋아서 자주 와요",
         ],
+        "kakao_id": "470540287",
     },
     {
         "id": 10,
         "name": "삼송빵집 현대시티몰가든파이브점",
         "address": "서울 송파구 충민로 66",
         "mood": ["편안한", "모던한"],
-        "purpose": ["빵구경", "선물"],
+        "purpose": ["빵구경", "선물", "대형빵집"],
         "signature_menu": "크림치즈빵",
         "flavor_profile": "바삭한 겉면 안에 진한 크림치즈가 가득. 한 입 베어 물면 고소한 행복이 터진다.",
         "price_range": "일반",
@@ -265,6 +281,7 @@ _RAW_BAKERIES = [
             "식빵이랑 소금빵도 맛있어요",
             "가성비 좋은 빵집이에요 가격 대비 최고",
         ],
+        "kakao_id": "589450462",
     },
 ]
 
@@ -479,7 +496,7 @@ def _infer_attributes(name: str, category: str) -> dict:
     if any(f in name_lower for f in franchises):
         return {
             "mood": ["편안한", "모던한"],
-            "purpose": ["브런치", "선물"],
+            "purpose": ["브런치", "선물", "대형빵집"],
             "signature_menu": "대표 빵",
             "price_range": "일반",
             "custom_order": False,
@@ -487,7 +504,7 @@ def _infer_attributes(name: str, category: str) -> dict:
     # 기본: 동네 베이커리
     return {
         "mood": ["아늑한"],
-        "purpose": ["빵구경", "브런치"],
+        "purpose": ["빵구경", "브런치", "동네 단골"],
         "signature_menu": "대표 빵",
         "price_range": "일반",
         "custom_order": False,
@@ -545,6 +562,7 @@ def _load_kakao_bakeries() -> list[dict]:
             "lat": place.get("lat", 0.0),
             "lon": place.get("lon", 0.0),
             "reviews": [],
+            "kakao_id": place.get("kakao_id", ""),
         })
         next_id += 1
 

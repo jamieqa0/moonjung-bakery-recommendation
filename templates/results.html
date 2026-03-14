@@ -4,7 +4,8 @@
 
 {% block head %}
 {% if kakao_js_key %}
-<script type="text/javascript" src="https://dapi.kakao.com/v2/maps/sdk.js?appkey={{ kakao_js_key }}&autoload=false"></script>
+<script type="text/javascript"
+    src="https://dapi.kakao.com/v2/maps/sdk.js?appkey={{ kakao_js_key }}&autoload=false"></script>
 {% endif %}
 {% endblock %}
 
@@ -34,8 +35,18 @@
                     <div class="card-header">
                         <img src="{{ bakery.image_url }}" alt="{{ bakery.signature_menu }}" class="card-illust">
                         <div class="card-header-text">
-                            <h3><a href="https://map.kakao.com/link/search/{{ bakery.name | urlencode }}+문정동" target="_blank" rel="noopener" class="bakery-name-link">{{ bakery.name }}</a></h3>
-                            <p class="address">{{ bakery.address }}</p>
+                            <h3><a href="https://search.naver.com/search.naver?query={{ bakery.name | urlencode }}+문정동"
+                                    target="_blank" rel="noopener" class="bakery-name-link">{{ bakery.name }}</a></h3>
+                            <div class="address-row">
+                                {% if bakery.kakao_id %}
+                                <a href="https://place.map.kakao.com/{{ bakery.kakao_id }}" target="_blank"
+                                    rel="noopener" class="map-link">[·]</a>
+                                {% else %}
+                                <a href="https://map.kakao.com/link/search/{{ bakery.address | urlencode }}" target="_blank"
+                                    rel="noopener" class="map-link">[·]</a>
+                                {% endif %}
+                                <span class="address">{{ bakery.address }}</span>
+                            </div>
                         </div>
                     </div>
                     <p class="description">{{ bakery.description }}</p>
@@ -73,13 +84,13 @@
 <script>
     var bakeryData = [
         {% for b in bakeries %}
-        {
-            name: {{ b.name | tojson }},
-            lat: {{ b.lat }},
-            lon: {{ b.lon }},
-            menu: {{ b.signature_menu | tojson }}
-        }{{ "," if not loop.last }}
-        {% endfor %}
+    {
+        name: {{ b.name | tojson }},
+        lat: {{ b.lat }},
+        lon: {{ b.lon }},
+        menu: {{ b.signature_menu | tojson }}
+    }{{ "," if not loop.last }}
+    {% endfor %}
     ];
 
     function initMap() {

@@ -85,9 +85,16 @@
                         모임</label>
                     <input type="radio" name="purpose" id="purpose-cake" value="케이크">
                     <label for="purpose-cake"><img src="/static/icons/bread.svg" alt="" class="chip-icon"> 케이크</label>
-                    <input type="radio" name="purpose" id="purpose-browse" value="빵구경">
-                    <label for="purpose-browse"><img src="/static/icons/telescope.svg" alt="" class="chip-icon">
+                    <input type="radio" name="purpose" id="purpose-tour" value="빵구경">
+                    <label for="purpose-tour"><img src="/static/icons/telescope.svg" alt="" class="chip-icon">
                         빵구경</label>
+                    <input type="radio" name="purpose" id="purpose-meal" value="식사빵">
+                    <label for="purpose-meal"><img src="/static/icons/bread.svg" alt="" class="chip-icon"> 식사빵</label>
+                    <input type="radio" name="purpose" id="purpose-local" value="동네 단골">
+                    <label for="purpose-local"><img src="/static/icons/sun.svg" alt="" class="chip-icon"> 동네 단골</label>
+                    <input type="radio" name="purpose" id="purpose-large" value="대형빵집">
+                    <label for="purpose-large"><img src="/static/icons/rocket.svg" alt="" class="chip-icon">
+                        대형빵집</label>
                 </div>
 
                 <span class="chip-group-label"><img src="/static/icons/moon.svg" alt="" class="label-icon">지구돈 환전 넉넉히
@@ -107,16 +114,18 @@
                     <input type="radio" name="max_distance" id="dist-none" value="" checked>
                     <label for="dist-none">무엇이든</label>
                     <input type="radio" name="max_distance" id="dist-near" value="near">
-                    <label for="dist-near"><img src="/static/icons/moon.svg" alt="" class="chip-icon"> 가볍게 산책하며 다녀올 거리 (500m 이내)</label>
+                    <label for="dist-near"><img src="/static/icons/moon.svg" alt="" class="chip-icon"> 가볍게 산책하며 (500m
+                        이내)</label>
                     <input type="radio" name="max_distance" id="dist-far" value="far">
-                    <label for="dist-far"><img src="/static/icons/rocket.svg" alt="" class="chip-icon"> 소화시킬 겸 다녀올 거리 (500m 이상)</label>
+                    <label for="dist-far"><img src="/static/icons/rocket.svg" alt="" class="chip-icon"> 소화시킬 겸 (500m
+                        이상)</label>
                 </div>
 
                 <div class="checkbox-group">
                     <label class="checkbox-label">
                         <input type="checkbox" name="parking" id="parking">
                         <span>주차 가능</span>
-                        <span class="checkbox-hint">우주선 대신 타고 온 자동차를 안전하게 세워둘 곳이 필요하다면 체크해 주세요!</span>
+                        <span class="checkbox-hint">우주선 대신 타고 온 자동차를 세워둘 곳이 필요하다면</span>
                     </label>
                     <label class="checkbox-label">
                         <input type="checkbox" name="custom_order" id="custom_order">
