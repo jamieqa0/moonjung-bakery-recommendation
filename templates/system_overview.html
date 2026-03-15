@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MoonBBang Station - System Overview</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Outfit:wght@300;500;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <style>
+        :root {
+            --bg-color: #0b0e14;
+            --card-bg: rgba(255, 255, 255, 0.05);
+            --accent-amber: #ffb347;
+            --accent-gold: #ffd700;
+            --text-main: #e0e0e0;
+            --text-muted: #a0a0a0;
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --transition-speed: 0.3s;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.6;
+            overflow-x: hidden;
+            background-image: 
+                radial-gradient(circle at 20% 30%, rgba(255, 179, 71, 0.05) 0%, transparent 40%),
+                radial-gradient(circle at 80% 70%, rgba(255, 215, 0, 0.05) 0%, transparent 40%);
+        }
+
+        h1, h2, h3 {
+            font-family: 'Outfit', sans-serif;
+            color: var(--accent-gold);
+            letter-spacing: -0.02em;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 5rem;
+            animation: fadeInDown 1s ease-out;
+        }
+
+        .hero-title {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--accent-amber), var(--accent-gold));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero-subtitle {
+            font-size: 1.2rem;
+            color: var(--text-muted);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        section {
+            margin-bottom: 4rem;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.6s ease-out;
+        }
+
+        section.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .section-title {
+            font-size: 2rem;
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .section-title::after {
+            content: '';
+            height: 1px;
+            flex-grow: 1;
+            background: linear-gradient(to right, var(--glass-border), transparent);
+        }
+
+        .card {
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 2.5rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            transition: transform var(--transition-speed);
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(255, 179, 71, 0.3);
+        }
+
+        .tech-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+        }
+
+        .tech-item {
+            background: rgba(255, 255, 255, 0.03);
+            padding: 1.5rem;
+            border-radius: 15px;
+            text-align: center;
+            border: 1px solid transparent;
+            transition: all var(--transition-speed);
+        }
+
+        .tech-item:hover {
+            background: rgba(255, 255, 255, 0.07);
+            border-color: var(--glass-border);
+        }
+
+        .tech-icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        .tech-name {
+            font-weight: 600;
+            color: var(--accent-amber);
+        }
+
+        .timeline {
+            position: relative;
+            padding-left: 2rem;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(to bottom, var(--accent-amber), transparent);
+        }
+
+        .timeline-item {
+            margin-bottom: 2.5rem;
+            position: relative;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -2.4rem;
+            top: 0.5rem;
+            width: 12px;
+            height: 12px;
+            background: var(--accent-gold);
+            border-radius: 50%;
+            box-shadow: 0 0 10px var(--accent-gold);
+        }
+
+        .timeline-phase {
+            font-weight: 700;
+            color: var(--accent-amber);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            margin-bottom: 0.2rem;
+            display: block;
+        }
+
+        .timeline-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .timeline-desc {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        .flow-diagram {
+            background: white;
+            padding: 2rem;
+            border-radius: 20px;
+            margin-top: 1rem;
+            overflow-x: auto;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 4rem 0;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            border-top: 1px solid var(--glass-border);
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Mermaid styling override */
+        .mermaid {
+            display: flex;
+            justify-content: center;
+        }
+
+        .tag {
+            display: inline-block;
+            padding: 0.2rem 0.6rem;
+            background: rgba(255, 179, 71, 0.1);
+            color: var(--accent-amber);
+            border-radius: 5px;
+            font-size: 0.8rem;
+            margin-right: 0.5rem;
+            margin-top: 0.5rem;
+        }
+
+        @media (max-width: 768px) {
+            .hero-title { font-size: 2.5rem; }
+            .tech-grid { grid-template-columns: 1fr 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1 class="hero-title">MoonBBang Station</h1>
+            <p class="hero-subtitle">우주에서 온 친구들을 위한 문정동 베이커리 가이드 시스템. 최적의 빵집 TOP 5를 추천하는 아름다운 정거장의 설계도를 소개합니다.</p>
+        </header>
+
+        <!-- 1. 사용 기술 -->
+        <section id="technologies">
+            <h2 class="section-title">01. Core Technologies</h2>
+            <style>
+                .tech-item {
+                    position: relative;
+                    perspective: 1000px;
+                    height: 160px;
+                    cursor: default;
+                }
+                .tech-inner {
+                    position: relative;
+                    width: 100%;
+                    height: 100%;
+                    transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+                    transform-style: preserve-3d;
+                }
+                .tech-item:hover .tech-inner {
+                    transform: rotateY(180deg);
+                }
+                .tech-front, .tech-back {
+                    position: absolute;
+                    width: 100%;
+                    height: 100%;
+                    backface-visibility: hidden;
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    justify-content: center;
+                    border-radius: 15px;
+                    padding: 1.5rem;
+                    border: 1px solid var(--glass-border);
+                    background: rgba(255, 255, 255, 0.03);
+                }
+                .tech-back {
+                    transform: rotateY(180deg);
+                    background: rgba(255, 179, 71, 0.1);
+                    border-color: var(--accent-amber);
+                    color: var(--accent-amber);
+                    font-size: 0.85rem;
+                    text-align: center;
+                    padding: 1rem;
+                }
+                .tech-item:hover {
+                    background: none;
+                    border: none;
+                }
+            </style>
+            <div class="card tech-grid" style="background: none; border: none; box-shadow: none; padding: 0;">
+                <div class="tech-item">
+                    <div class="tech-inner">
+                        <div class="tech-front">
+                            <span class="tech-icon">🐍</span>
+                            <span class="tech-name">Python 3.11</span>
+                            <p class="timeline-desc">안정적인 백엔드 코어</p>
+                        </div>
+                        <div class="tech-back">
+                            풍부한 라이브러리 생태계와 직관적인 문법으로 데이터 파이프라인과 분석 로직을 신속하게 구축하기 위해 선택했습니다.
+                        </div>
+                    </div>
+                </div>
+                <div class="tech-item">
+                    <div class="tech-inner">
+                        <div class="tech-front">
+                            <span class="tech-icon">⚡</span>
+                            <span class="tech-name">FastAPI</span>
+                            <p class="timeline-desc">고성능 비동기 웹 프레임워크</p>
+                        </div>
+                        <div class="tech-back">
+                            비동기 처리를 통한 빠른 응답 속도와 자동화된 스웨거 문서화로 프론트엔드-백엔드 협업 효율을 극대화했습니다.
+                        </div>
+                    </div>
+                </div>
+                <div class="tech-item">
+                    <div class="tech-inner">
+                        <div class="tech-front">
+                            <span class="tech-icon">🎭</span>
+                            <span class="tech-name">Playwright</span>
+                            <p class="timeline-desc">데이터 정밀 스크래핑</p>
+                        </div>
+                        <div class="tech-back">
+                            최신 웹 브라우저 엔진을 완벽하게 제어하여 카카오맵, 네이버 등의 동적 콘텐츠를 정확하게 수집하기 위해 도입했습니다.
+                        </div>
+                    </div>
+                </div>
+                <div class="tech-item">
+                    <div class="tech-inner">
+                        <div class="tech-front">
+                            <span class="tech-icon">🎨</span>
+                            <span class="tech-name">Jinja2</span>
+                            <p class="timeline-desc">서버 사이드 템플릿 렌더링</p>
+                        </div>
+                        <div class="tech-back">
+                            FastAPI와의 높은 호환성 및 강력한 제어문을 통해 동적인 추천 결과 페이지를 유연하게 렌더링하기 위해 사용했습니다.
+                        </div>
+                    </div>
+                </div>
+                <div class="tech-item">
+                    <div class="tech-inner">
+                        <div class="tech-front">
+                            <span class="tech-icon">🧪</span>
+                            <span class="tech-name">Pytest</span>
+                            <p class="timeline-desc">신뢰성 높은 TDD 환경</p>
+                        </div>
+                        <div class="tech-back">
+                            복잡한 추천 로직과 데이터 검증 과정을 자동화된 테스트로 관리하여 코드 품질과 안정성을 보장하기 위해 도입했습니다.
+                        </div>
+                    </div>
+                </div>
+                <div class="tech-item">
+                    <div class="tech-inner">
+                        <div class="tech-front">
+                            <span class="tech-icon">🗺️</span>
+                            <span class="tech-name">Kakao Maps</span>
+                            <p class="timeline-desc">위치 정보 시각화 SDK</p>
+                        </div>
+                        <div class="tech-back">
+                            국내 위치 데이터에 특화된 지도 API를 통해 사용자에게 가장 정확하고 시각적인 빵집 위치 정보를 제공하기 위해 선택했습니다.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 2. 주요 모듈 구성 -->
+        <section id="modules">
+            <h2 class="section-title">02. Architecture Modules</h2>
+            <div class="card">
+                <style>
+                    .module-list {
+                        display: grid;
+                        grid-template-columns: 1fr 1fr;
+                        gap: 2rem;
+                    }
+                    .module-card h4 {
+                        color: var(--accent-amber);
+                        margin-bottom: 0.5rem;
+                        display: flex;
+                        align-items: center;
+                        gap: 0.5rem;
+                    }
+                    .module-card p {
+                        font-size: 0.9rem;
+                        color: var(--text-muted);
+                    }
+                </style>
+                <div class="module-list">
+                    <div class="module-card">
+                        <h4>📦 Data Pipeline</h4>
+                        <p><code>scripts/</code> & <code>app/data.py</code><br>카카오 로컬 API, 네이버 검색, 서울 공공데이터를 수집·정제하고 인메모리에 로드하는 데이터 공급망입니다.</p>
+                    </div>
+                    <div class="module-card">
+                        <h4>🧠 Core Engine</h4>
+                        <p><code>app/recommender.py</code><br>사용자의 필터와 감각 정보를 바탕으로 가용 베이커리에 점수를 부여하고 TOP 5를 선별하는 핵심 로직입니다.</p>
+                    </div>
+                    <div class="module-card">
+                        <h4>🔍 Analysis & Logic</h4>
+                        <p><code>review_analyzer.py</code> & <code>sensory.py</code><br>리뷰 텍스트에서 특징 태그를 추출하고, 모호한 감각 언어를 시스템 필터로 변환하는 지능형 모듈입니다.</p>
+                    </div>
+                    <div class="module-card">
+                        <h4>🛸 Web Interface</h4>
+                        <p><code>app/main.py</code> & <code>templates/</code><br>FastAPI 라우팅과 Jinja2 템플릿, 그리고 우주 테마의 디자인 시스템이 결합된 사용자 접점입니다.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 3. 데이터 및 시스템 흐름 -->
+        <section id="flow">
+            <h2 class="section-title">03. System & Data Flow</h2>
+            <div class="card">
+                <p style="margin-bottom: 2rem;">데이터가 수집되어 사용자에게 추천되기까지의 여정입니다.</p>
+                <div class="flow-diagram">
+                    <pre class="mermaid">
+graph TD
+    subgraph DataCollection [데이터 수집: Playwright & API]
+        A[공공데이터 / 카카오 API] -->|Requests| B(Search Info)
+        B -->|Playwright| C(Review & Menu Details)
+        C -->|Raw Storage| D[JSON & CSV Data]
+    end
+
+    subgraph ServerRuntime [서버 사이드: FastAPI & Pydantic]
+        D -->|Startup| E{Pydantic Loader}
+        E -->|Review Analyzer| F[Tagged Bakery Model]
+        F --> G[(In-Memory Cache)]
+    end
+
+    subgraph UserJourney [사용자 여정: Jinja2 & Kakao Maps]
+        H[User Request] -->|FastAPI Router| I{Recommender Engine}
+        G --> I
+        I -->|Scoring Logic| J[TOP 5 Recommendation]
+        J -->|Jinja2 + Kakao Maps SDK| K[Visual Results]
+    end
+
+    style J fill:#ffb347,stroke:#ffd700,color:#000
+    style K fill:#ffb347,stroke:#ffd700,color:#000
+                    </pre>
+                </div>
+            </div>
+        </section>
+
+        <!-- 4. 엔지니어링 하이라이트 -->
+        <section id="engineering">
+            <h2 class="section-title">04. Engineering Highlights</h2>
+            <div class="card">
+                <div class="module-list">
+                    <div class="module-card">
+                        <h4>🤖 NLP Integration</h4>
+                        <p><code>kiwipiepy</code> 형태소 분석기를 연동하여 단순 키워드 매핑을 넘어선 정밀한 리뷰 감성 분석을 수행합니다. 조사와 어미 변화에 관계없이 핵심 의미를 정확히 추출합니다.</p>
+                    </div>
+                    <div class="module-card">
+                        <h4>🛡️ Data Integrity</h4>
+                        <p>3단계 검증 필터(업태·상호·양성 키워드)와 중복 제거 로직을 통해 데이터 무결성을 유지합니다. 인허가 데이터와 실시간 맵 데이터를 교차 검증하여 허위 정보를 원천 차단합니다.</p>
+                    </div>
+                    <div class="module-card">
+                        <h4>📝 Living Documentation</h4>
+                        <p>Tech Spec, 개발 페이즈별 Plan, Walkthrough 문서를 실력 있는 엔지니어링 팀 수준으로 관리합니다. 코드와 문서의 동기화를 통해 프로젝트의 지속 가능성을 보장합니다.</p>
+                    </div>
+                    <div class="module-card">
+                        <h4>📐 Clean Architecture</h4>
+                        <p>관심사 분리(SoC) 원칙에 따라 데이터 수집, 추천 엔진, 웹 인터페이스 모듈을 독립적으로 구성하여 유지보수성과 확장성을 극대화했습니다.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 5. 핵심 특징 -->
+        <section id="features">
+            <h2 class="section-title">05. Special Components</h2>
+            <div class="card" style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
+                <div>
+                    <h3 style="margin-bottom: 1rem;">🚀 외계인 온보딩</h3>
+                    <p class="timeline-desc">"빵이 뭔가요?"라고 묻는 지구 초보자들을 위해 모든 용어에 감각적인 설명을 덧붙이는 친절한 안내 시스템입니다.</p>
+                    <div class="tag">지구 초보 모드</div>
+                    <div class="tag">감각 툴팁</div>
+                </div>
+                <div>
+                    <h3 style="margin-bottom: 1rem;">🧬 감각 추천 엔진</h3>
+                    <p class="timeline-desc">분위기나 가격 대신 '바삭함', '고소함', '나홀로'와 같은 직관적인 감각으로 최적의 장소를 찾아줍니다.</p>
+                    <div class="tag">이진 질문 매핑</div>
+                    <div class="tag">점수 계산기</div>
+                </div>
+                <div>
+                    <h3 style="margin-bottom: 1rem;">✨ 프리미엄 레이아웃</h3>
+                    <p class="timeline-desc">CSS Grid와 전용 Spacing 시스템으로 설계된 반응형 UI는 어떤 환경에서도 일관된 아름다움을 유지합니다.</p>
+                    <div class="tag">Glassmorphism</div>
+                    <div class="tag">4px Grid</div>
+                </div>
+                <div>
+                    <h3 style="margin-bottom: 1rem;">📊 데이터 파이프라인</h3>
+                    <p class="timeline-desc">카카오, 네이버, 공공데이터를 교차 검증하여 중복을 제거하고 신뢰도 높은 베이커리 지도를 구성합니다.</p>
+                    <div class="tag">Playwright</div>
+                    <div class="tag">Haversine</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 6. 제작 기간 (Phase) -->
+        <section id="timeline">
+            <h2 class="section-title">06. Development Journey</h2>
+            <div class="card">
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <span class="timeline-phase">Phase 1-6</span>
+                        <p class="timeline-title">코어 엔진 및 서비스 골격</p>
+                        <p class="timeline-desc">데이터 모델 설계, 리뷰 분석 알고리즘 구축 및 FastAPI 기반의 핵심 추천 API와 웹 골격을 완성했습니다.</p>
+                    </div>
+                    <div class="timeline-item">
+                        <span class="timeline-phase">Phase 7-10</span>
+                        <p class="timeline-title">경험의 확장: 우주적 연대</p>
+                        <p class="timeline-desc">외계 친화적 온보딩, 감각 기반 추천(식감/맛) 경로를 추가하여 어느 행성에서 왔든 쉽게 빵집을 찾을 수 있게 했습니다.</p>
+                    </div>
+                    <div class="timeline-item">
+                        <span class="timeline-phase">Phase 11-14</span>
+                        <p class="timeline-title">데이터 생태계 및 지도 연동</p>
+                        <p class="timeline-desc">카카오/네이버 시스템 연동 및 공공데이터를 도입하고, 카카오맵 JS SDK를 통한 위치 시각화 기반을 마련했습니다.</p>
+                    </div>
+                    <div class="timeline-item">
+                        <span class="timeline-phase">Phase 15-18</span>
+                        <p class="timeline-title">프리미엄 디자인 시스템</p>
+                        <p class="timeline-desc">앰버/크러스트 디자인 시스템과 CSS Grid, 4px Spacing 체계를 도입하여 우주의 미학을 담은 UX를 완성했습니다.</p>
+                    </div>
+                    <div class="timeline-item">
+                        <span class="timeline-phase">Phase 19</span>
+                        <p class="timeline-title">데이터 품질 고도화</p>
+                        <p class="timeline-desc">3단계 필터링으로 검색 신뢰도를 높이고, 네이버 스크래핑을 통합하여 더 풍부한 빵집 정보를 제공하게 되었습니다.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <footer class="footer">
+            <p>&copy; 2026 MoonBBang Station Project. We Are The Universe.</p>
+        </footer>
+    </div>
+
+    <script>
+        // Mermaid initialization
+        mermaid.initialize({ startOnLoad: true, theme: 'neutral' });
+
+        // Intersection Observer for section animations
+        const sections = document.querySelectorAll('section');
+        const observerOptions = {
+            threshold: 0.1
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        sections.forEach(section => {
+            observer.observe(section);
+        });
+    </script>
+</body>
+</html>
