@@ -2,11 +2,6 @@ fastapi
 uvicorn[standard]
 jinja2
 python-multipart
-pytest
-httpx
 pandas
 python-dotenv
-pytest-cov
 pillow
-playwright
-kiwipiepy

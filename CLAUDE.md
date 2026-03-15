@@ -9,10 +9,21 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 - **GitHub**: https://github.com/jamieqa0/moonbbang-station
 
+## 의존성 구조
+
+- **`requirements.txt`** — 프로덕션(Render) 배포용. `kiwipiepy`, `playwright`, `pytest` 계열 제외
+- **`requirements-dev.txt`** — 로컬 개발용 (`-r requirements.txt` 포함 + 테스트/스크래핑 도구)
+
+> **kiwipiepy 제거 이유**: Render 무료 플랜 메모리(512MB) 초과로 OOM 발생.
+> `review_analyzer.py`는 단순 부분 문자열 검색(`kw in text`)으로 대체. 한국어 키워드 특성상 정확도 차이 미미.
+
 ## 개발 명령어
 
 ```bash
-# 의존성 설치
+# 의존성 설치 (로컬 개발)
+pip install -r requirements-dev.txt
+
+# 배포용만 설치할 때
 pip install -r requirements.txt
 
 # 개발 서버 실행 (http://localhost:8000)
@@ -123,7 +134,7 @@ TDD 기반. 테스트를 먼저 작성하고 구현한다.
 - `tests/test_sensory.py` — 감각 기반 매핑 로직 단위 테스트
 - `tests/test_data.py` — 데이터 무결성 (좌표, 리뷰, 태그, ID 유일성, haversine, TM→WGS84, CSV 로더)
 - `tests/test_api.py` — API + HTML 통합 테스트
-- `tests/conftest.py` — 공통 fixture (`client`, `sample_cafes`)
+- `tests/conftest.py` — 공통 fixture (`client`, `sample_bakeries`)
 
 ## 배포
 

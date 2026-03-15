@@ -1,0 +1,7 @@
+# 개발·테스트 전용 의존성 (Render 배포에는 불필요)
+-r requirements.txt
+pytest
+pytest-cov
+httpx
+kiwipiepy
+playwright

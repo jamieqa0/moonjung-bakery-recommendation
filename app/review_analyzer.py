@@ -1,6 +1,9 @@
 from __future__ import annotations
 
-from kiwipiepy import Kiwi
+# NOTE: kiwipiepy(형태소 분석기)는 Render 무료 플랜 메모리(512MB) 초과로 제거.
+# 현재 키워드들은 한국어 특성상 원본 텍스트에 그대로 포함되어 있어
+# 단순 부분 문자열 검색(kw in text)으로 거의 동일한 정확도를 유지한다.
+# 예) "웨이팅이있어요" → "웨이팅" in "웨이팅이있어요" == True
 
 KEYWORD_TAG_MAP: dict[str, list[str]] = {
     "아늑한": ["아늑", "따뜻", "포근"],
@@ -19,38 +22,6 @@ KEYWORD_TAG_MAP: dict[str, list[str]] = {
     "친절한": ["친절"],
 }
 
-# Kiwi 인스턴스 — 모듈 로드 시 1회 초기화 (모델 로딩 비용이 크므로 싱글턴)
-_kiwi: Kiwi | None = None
-
-
-def _get_kiwi() -> Kiwi:
-    global _kiwi
-    if _kiwi is None:
-        # kiwipiepy 모델 경로 탐색 순서:
-        # 1) 환경변수 KIWI_MODEL_PATH (배포 환경에서 설정)
-        # 2) C:/kiwi_model (Windows 개발환경 — 사용자 경로에 한글이 있으면 C++ 확장이
-        #    모델을 못 열기 때문에 한글 없는 경로로 복사 후 사용)
-        # 3) kiwipiepy_model 패키지 기본 경로 (리눅스/Mac 등 ASCII 경로 환경)
-        import os
-        model_path: str | None = os.environ.get("KIWI_MODEL_PATH")
-        if model_path is None:
-            win_fallback = "C:/kiwi_model"
-            if os.path.isdir(win_fallback):
-                model_path = win_fallback
-        _kiwi = Kiwi(model_path=model_path) if model_path else Kiwi()
-    return _kiwi
-
-
-def _morphemes(text: str) -> str:
-    """텍스트를 형태소 단위로 분리해 공백 구분 문자열로 반환.
-
-    예) "웨이팅이있어요" → "웨이팅 이 있 어요"
-        "친절합니다"    → "친절 하 ㅂ니다"
-        "가성비가최고"  → "가성비 가 최고"
-    """
-    tokens = _get_kiwi().tokenize(text)
-    return " ".join(t.form for t in tokens)
-
 
 def extract_tags(reviews: list[str], min_reviews: int = 1) -> list[str]:
     """리뷰 목록에서 태그를 추출한다.
@@ -63,17 +34,11 @@ def extract_tags(reviews: list[str], min_reviews: int = 1) -> list[str]:
     if not reviews:
         return []
 
-    # 리뷰별로 원본 + 형태소 분리 텍스트를 미리 준비
-    morphed_reviews = [_morphemes(r) for r in reviews]
-
     tags = []
     for tag, keywords in KEYWORD_TAG_MAP.items():
-        # 키워드가 등장한 리뷰 수 카운트
-        # - 원본: "가격 대비", "예쁜 박스" 같은 복합 표현 보장
-        # - 형태소: 조사·어미 결합으로 변형된 단어 감지 (예: "웨이팅이있어요" → "웨이팅")
         match_count = sum(
-            1 for raw, morphed in zip(reviews, morphed_reviews)
-            if any(kw in raw or kw in morphed for kw in keywords)
+            1 for raw in reviews
+            if any(kw in raw for kw in keywords)
         )
         if match_count >= min_reviews:
             tags.append(tag)
