@@ -1031,16 +1031,15 @@ header nav a:hover::after {
     grid-area: top;
     text-align: center;
     padding: var(--space-5) var(--space-6);
-    background: linear-gradient(135deg, var(--card-bg) 0%, var(--amber-glow) 100%);
+    background: transparent;
     border: none;
     border-radius: var(--radius-md);
-    box-shadow: var(--shadow-md);
 }
 
 .results-summary {
     font-family: var(--sans);
     color: var(--ink-muted);
-    font-size: var(--text-sm);
+    font-size: var(--text-base);
     font-weight: 300;
     margin-top: var(--space-1);
 }

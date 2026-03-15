@@ -16,8 +16,8 @@
     <div class="results-layout{% if not kakao_js_key %} results-layout--no-map{% endif %}">
         <!-- 상단 프레임 -->
         <div class="results-top">
-            <h2><img src="/static/icons/telescope.svg" alt="" class="heading-icon">당신을 위해 고른 문정동의 빵집</h2>
-            <p class="results-summary">총 {{ bakeries|length }}곳의 빵집을 찾았습니다</p>
+            <h3><img src="/static/icons/telescope.svg" alt="" class="heading-icon">당신을 위한 빵집</h2>
+                <p class="results-summary">총 {{ bakeries|length }}곳을 찾았어요</p>
         </div>
 
         <!-- 좌측 프레임: 지도 -->
@@ -42,30 +42,37 @@
                             referrerpolicy="no-referrer"
                             onerror="this.onerror=null;this.src='{{ bakery.image_url }}';this.className='card-illust';">
                         {% else %}
-                        <img src="{{ bakery.image_url }}" alt="{{ bakery.signature_menu | join(', ') }}" class="card-illust">
+                        <img src="{{ bakery.image_url }}" alt="{{ bakery.signature_menu | join(', ') }}"
+                            class="card-illust">
                         {% endif %}
                         <div class="card-header-text">
                             <h3>{{ bakery.name }}</h3>
                             <div class="address-row">
-                                <a href="https://search.naver.com/search.naver?query={{ bakery.name | urlencode }}" target="_blank"
-                                    rel="noopener" class="naver-link" title="네이버에서 검색">N</a>
+                                <a href="https://search.naver.com/search.naver?query={{ bakery.name | urlencode }}"
+                                    target="_blank" rel="noopener" class="naver-link" title="네이버에서 검색">N</a>
                                 {% if bakery.kakao_id %}
                                 <a href="https://place.map.kakao.com/{{ bakery.kakao_id }}" target="_blank"
                                     rel="noopener" class="kakao-link" title="카카오맵에서 보기">K</a>
                                 {% else %}
-                                <a href="https://map.kakao.com/link/search/{{ bakery.address | urlencode }}" target="_blank"
-                                    rel="noopener" class="kakao-link" title="카카오맵에서 보기">K</a>
+                                <a href="https://map.kakao.com/link/search/{{ bakery.address | urlencode }}"
+                                    target="_blank" rel="noopener" class="kakao-link" title="카카오맵에서 보기">K</a>
                                 {% endif %}
                                 <span class="address">{{ bakery.address }}</span>
                             </div>
                             <p class="description">{{ bakery.description }}</p>
-                            <p class="card-signature-menu"><strong>대표 메뉴:</strong> {{ bakery.signature_menu | map('strip_parens') | join(' · ') }}</p>
+                            <p class="card-signature-menu"><strong>대표 메뉴:</strong> {{ bakery.signature_menu |
+                                map('strip_parens') | join(' · ') }}</p>
                         </div>
                     </div>
                     {% if bakery.flavor_profile %}
                     <p class="flavor-profile">{{ bakery.flavor_profile }}</p>
                     {% endif %}
-                    <p class="card-meta"><strong>가격대:</strong> {{ bakery.price_range }} · <strong>문정역에서:</strong> {{ (bakery.distance * 1000) | int }}m{% if bakery.parking == true %} <span class="info-tag info-tag--parking">주차가능</span>{% elif bakery.parking == false %} <span class="info-tag info-tag--no-parking">주차불가</span>{% endif %}{% if bakery.custom_order %} <span class="info-tag info-tag--custom">주문제작가능</span>{% endif %}</p>
+                    <p class="card-meta"><strong>가격대:</strong> {{ bakery.price_range }} · <strong>문정역에서:</strong> {{
+                        (bakery.distance * 1000) | int }}m{% if bakery.parking == true %} <span
+                            class="info-tag info-tag--parking">주차가능</span>{% elif bakery.parking == false %} <span
+                            class="info-tag info-tag--no-parking">주차불가</span>{% endif %}{% if bakery.custom_order %}
+                        <span class="info-tag info-tag--custom">주문제작가능</span>{% endif %}
+                    </p>
                     <div class="tags">
                         {% for tag in bakery.tags %}
                         <span class="tag">{{ tag }}</span>
@@ -74,7 +81,8 @@
 
                     {% if bakery.reviews %}
                     <details class="card-accordion">
-                        <summary><img src="/static/icons/telescope.svg" alt="" class="label-icon">방문자 리뷰 ({{ bakery.reviews|length }})</summary>
+                        <summary><img src="/static/icons/telescope.svg" alt="" class="label-icon">방문자 리뷰 ({{
+                            bakery.reviews|length }})</summary>
                         <div class="accordion-body">
                             <ul class="card-review-list">
                                 {% for review in bakery.reviews %}

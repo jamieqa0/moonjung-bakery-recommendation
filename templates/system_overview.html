@@ -571,22 +571,61 @@ graph TD
             .module-list {
                 grid-template-columns: 1fr !important;
             }
+            #features .card {
+                grid-template-columns: 1fr !important;
+            }
+
+            /* 카드 높이 정렬: stretch 대신 각자 높이 유지 */
+            .tech-grid {
+                align-items: start;
+            }
+
+            /* 3D 플립 비활성화: mobile에서 backface-visibility 미지원 대응 */
+            .tech-item {
+                height: auto !important;
+                min-height: 120px;
+                perspective: none !important;
+            }
+            .tech-inner {
+                height: auto !important;
+                transform-style: flat !important;
+                transform: none !important;
+                transition: none !important;
+            }
+            .tech-item:hover .tech-inner {
+                transform: none !important;
+            }
+            .tech-front {
+                position: relative !important;
+                height: auto !important;
+                backface-visibility: visible !important;
+                -webkit-backface-visibility: visible !important;
+            }
+            .tech-back {
+                display: none !important;
+                transform: none !important;
+            }
+            .tech-item.flipped .tech-front {
+                display: none !important;
+            }
+            .tech-item.flipped .tech-back {
+                display: flex !important;
+                position: relative !important;
+                transform: none !important;
+                height: auto !important;
+                min-height: 120px;
+            }
         }
 
         @media (max-width: 480px) {
             .module-list {
                 gap: 1.2rem !important;
             }
-            /* #features .card 인라인 스타일 오버라이드 */
             #features .card {
-                grid-template-columns: 1fr !important;
                 gap: 1.5rem !important;
             }
             .tech-grid {
                 grid-template-columns: 1fr 1fr !important;
-            }
-            .tech-item {
-                height: 140px;
             }
         }
     </style>

@@ -8,6 +8,17 @@ from app.models import Bakery
 from app.review_analyzer import extract_tags, generate_fallback_tags
 
 
+def _fix_photo_url(url: str | None) -> str:
+    """스크래핑 오류로 생성된 'https:https://...' 형태의 URL을 수정한다."""
+    if not url:
+        return ""
+    if url.startswith("https:https://"):
+        return url[len("https:"):]
+    if url.startswith("http:http://"):
+        return url[len("http:"):]
+    return url
+
+
 def _get_illust_url(menus: list[str]) -> str:
     """대표 메뉴 키워드로 일러스트 이미지 경로를 반환한다."""
     combined = " ".join(menus).lower()
@@ -463,7 +474,7 @@ def _load_public_bakeries() -> list[dict]:
             real_reviews = naver.get("reviews", [])
             real_menus = naver.get("menus", [])
             real_hours = naver.get("hours")
-            real_photo = naver.get("photo_url")
+            real_photo = _fix_photo_url(naver.get("photo_url"))
 
             # 메뉴에서 대표 메뉴 추출
             bread_menus = [m for m in real_menus if not any(k in m for k in _DRINK_KEYWORDS)]
@@ -747,7 +758,7 @@ def _load_kakao_bakeries() -> list[dict]:
         real_reviews = detail.get("reviews", [])
         real_menus = detail.get("menus", [])
         real_hours = detail.get("hours")
-        real_photo = detail.get("photo_url")
+        real_photo = _fix_photo_url(detail.get("photo_url"))
 
         attrs = _infer_attributes(name, category, real_reviews)
 
@@ -828,7 +839,7 @@ def _build_bakeries() -> list[Bakery]:
 
         # 일러스트: 스크래핑 메뉴 없으면 시드 메뉴 키워드로 폴백 (시각용)
         image_url = _get_illust_url(signature_menu or raw.get("signature_menu", []))
-        photo_url = detail.get("photo_url") or photos.get(str(raw["id"]), "")
+        photo_url = _fix_photo_url(detail.get("photo_url")) or photos.get(str(raw["id"]), "")
         description = descriptions.get(raw["name"]) or raw.get("description", "")
 
         custom_order = attrs.get("custom_order")
